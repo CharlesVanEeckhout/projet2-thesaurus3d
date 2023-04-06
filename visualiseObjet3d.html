@@ -24,7 +24,7 @@
 
         var tabImages = [
             'objets3d/textures/Transparent.gif', 
-            'objets3d/textures/Sol.jpg' // CHANGE QUELLE TEXTURE
+            'objets3d/textures/Fleche.png' // CHANGE QUELLE TEXTURE
         ]; 
         var TEX_TRANSPARENT = 0;
         var TEX_OBJ3D = 1;
@@ -77,8 +77,8 @@
 
             // La caméra
             var camera = creerCamera();
-            setPositionsCameraXYZ([0, 0.5, 5], camera);
-            setCiblesCameraXYZ([0, 0.5, 0], camera);
+            setPositionsCameraXYZ([0, 0, 5], camera);
+            setCiblesCameraXYZ([0, 0, 0], camera);
             setOrientationsXYZ([0, 1, 0], camera);
             objScene3D.camera = camera;
 
@@ -210,51 +210,48 @@
             var camera = objScene3D.camera;
 
             if (objClavier['ArrowLeft'] === true || objClavier['ArrowRight'] === true) {
-                var fltX = getCibleCameraX(camera) - getPositionCameraX(camera);
-                var fltZ = getCibleCameraZ(camera) - getPositionCameraZ(camera);
-                var intDirection = (objClavier['ArrowLeft'] === true) ? -1 : 1;
-                var fltAngle = intDirection * Math.PI / 180; // Tourner 1 degré
-                
-                var fltXPrime = fltX * Math.cos(fltAngle) - fltZ * Math.sin(fltAngle);
-                var fltZPrime = fltX * Math.sin(fltAngle) + fltZ * Math.cos(fltAngle);
+                var fltX = getPositionCameraX(camera) - getCibleCameraX(camera);
+                var fltZ = getPositionCameraZ(camera) - getCibleCameraZ(camera);
+                var fltRayon = Math.sqrt(fltX * fltX + fltZ * fltZ);
+                var intDirection = (objClavier['ArrowLeft'] === true) ? 1 : -1;
 
-                setCibleCameraX(getPositionCameraX(camera) + fltXPrime, camera);
-                setCibleCameraZ(getPositionCameraZ(camera) + fltZPrime, camera);
+                var fltXPrime = fltRayon * Math.cos(Math.atan2(fltZ, fltX) + intDirection*0.02);
+                var fltZPrime = fltRayon * Math.sin(Math.atan2(fltZ, fltX) + intDirection*0.02);
+
+                setPositionCameraX(getCibleCameraX(camera) + fltXPrime, camera);
+                setPositionCameraZ(getCibleCameraZ(camera) + fltZPrime, camera);
             }
             if (objClavier['ArrowUp'] === true || objClavier['ArrowDown'] === true) {
-                var fltX = getCibleCameraX(camera) - getPositionCameraX(camera);
-                var fltZ = getCibleCameraZ(camera) - getPositionCameraZ(camera);
-                var fltRayon = Math.sqrt(fltX * fltX + fltZ * fltZ);
+                var fltX = getPositionCameraX(camera) - getCibleCameraX(camera);
+                var fltY = getPositionCameraY(camera) - getCibleCameraY(camera);
+                var fltZ = getPositionCameraZ(camera) - getCibleCameraZ(camera);
+                var fltRayon = Math.sqrt(fltX * fltX + fltY * fltY + fltZ * fltZ);
                 var intDirection = (objClavier['ArrowUp'] === true) ? 1 : -1;
+                var angleXZ = Math.atan2(fltZ, fltX);
+                var angleY = Math.asin(fltY / fltRayon);
 
-                var fltXPrime = intDirection * 0.05 * Math.cos(Math.acos(fltX / fltRayon));
-                var fltZPrime = intDirection * 0.05 * Math.sin(Math.asin(fltZ / fltRayon));
+                var fltXPrime = fltRayon * Math.cos(angleXZ) * Math.cos(angleY + intDirection*0.02);
+                var fltYPrime = fltRayon * Math.sin(angleY + intDirection*0.02);
+                var fltZPrime = fltRayon * Math.sin(angleXZ) * Math.cos(angleY + intDirection*0.02);
 
-                setCibleCameraX(getCibleCameraX(camera) + fltXPrime, camera);
-                setCibleCameraZ(getCibleCameraZ(camera) + fltZPrime, camera);
-                setPositionCameraX(getPositionCameraX(camera) + fltXPrime, camera);
-                setPositionCameraZ(getPositionCameraZ(camera) + fltZPrime, camera);
-            }
-            if (objClavier['KeyQ'] === true || objClavier['KeyA'] === true) {
-                var fltY = getCibleCameraY(camera) - getPositionCameraY(camera);
-                var fltZ = getCibleCameraZ(camera) - getPositionCameraZ(camera);
-                var intDirection = (objClavier['KeyQ'] === true) ? -1 : 1;
-                var fltAngle = intDirection * Math.PI / 180; // Tourner 1 degré
-                
-                var fltYPrime = fltY * Math.cos(fltAngle) - fltZ * Math.sin(fltAngle);
-                var fltZPrime = fltY * Math.sin(fltAngle) + fltZ * Math.cos(fltAngle);
-
-                setCibleCameraY(getPositionCameraY(camera) + fltYPrime, camera);
-                setCibleCameraZ(getPositionCameraZ(camera) + fltZPrime, camera);
+                setPositionCameraX(getCibleCameraX(camera) + fltXPrime, camera);
+                setPositionCameraY(getCibleCameraY(camera) + fltYPrime, camera);
+                setPositionCameraZ(getCibleCameraZ(camera) + fltZPrime, camera);
             }
             if (objClavier['KeyW'] === true || objClavier['KeyS'] === true) {
-                var fltY = getCibleCameraY(camera) - getPositionCameraY(camera);
-                var intDirection = (objClavier['KeyW'] === true) ? 1 : -1;
+                var fltX = getPositionCameraX(camera) - getCibleCameraX(camera);
+                var fltY = getPositionCameraY(camera) - getCibleCameraY(camera);
+                var fltZ = getPositionCameraZ(camera) - getCibleCameraZ(camera);
+                //var fltRayon = Math.sqrt(fltX * fltX + fltY * fltY + fltZ * fltZ);
+                var fltZoom = (objClavier['KeyW'] === true) ? 99/100 : 100/99;
+                
+                var fltXPrime = fltZoom * fltX;
+                var fltYPrime = fltZoom * fltY;
+                var fltZPrime = fltZoom * fltZ;
 
-                var fltYPrime = intDirection * 0.05;
-
-                setCibleCameraY(getCibleCameraY(camera) + fltYPrime, camera);
-                setPositionCameraY(getPositionCameraY(camera) + fltYPrime, camera);
+                setPositionCameraX(getCibleCameraX(camera) + fltXPrime, camera);
+                setPositionCameraY(getCibleCameraY(camera) + fltYPrime, camera);
+                setPositionCameraZ(getCibleCameraZ(camera) + fltZPrime, camera);
             }
             
 
@@ -266,19 +263,19 @@
 
 <body onload="demarrer()">
     <!--TODO:
-        EMPECHE CE TEXTE D'ETRE FOCUS QUAND ON APPUIE LES FLÈCHES-->
-    <div>
+        EMPECHE CE TEXTE D'ETRE FOCUS QUAND ON APPUIE LES FLÈCHES
+        CAUSE: OPTION "caret browsing" -->
+    <header>
         <h3>
             Visualiser
         </h3>
         <p>
-            ArrowUp/ArrowDown: Avancer et reculer<br />
-            KeyW/KeyS: Monter et descendre<br />
-            ArrowLeft/ArrowRight: Regarder à gauche et à droite<br />
-            KeyQ/KeyA: Regarder en haut et en bas<br />
+            ArrowUp/ArrowDown: Regarder de plus haut et de plus bas<br />
+            ArrowLeft/ArrowRight: Regarder à la gauche et à la droite<br />
+            KeyW/KeyS: Avancer et reculer<br />
         </p>
-    </div>
-    <canvas id="monCanvas" width="640" height="640" tabIndex="1" onkeydown="onKeyDown()" onkeyup="onKeyUp()">
+    </header>
+    <canvas id="monCanvas" width="640" height="640" tabIndex="1" onkeydown="onKeyDown(); return false" onkeyup="onKeyUp()">
         Votre navigateur ne supporte pas la balise canvas
     </canvas>
 </body>

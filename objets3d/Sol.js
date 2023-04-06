@@ -1,9 +1,9 @@
 
 function creerObj3DSol(objgl, intNoTexture) {
     var obj3DSol = new Object();
-    obj3DSol.fltProfondeur = 15;
-    obj3DSol.fltLargeur = 15;
-    obj3DSol.fltHauteur = 0;
+    obj3DSol.fltLargeur = 15;   // X
+    obj3DSol.fltHauteur = 0;    // Y
+    obj3DSol.fltProfondeur = 15;// Z
 
     obj3DSol.vertex = creerVertexSol(objgl, obj3DSol.fltLargeur, obj3DSol.fltProfondeur);
     obj3DSol.couleurs = creerCouleursSol(objgl, [1, 1, 1, 1]);
