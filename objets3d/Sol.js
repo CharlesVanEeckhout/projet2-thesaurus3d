@@ -1,9 +1,9 @@
 
 function creerObj3DSol(objgl, intNoTexture) {
     var obj3DSol = new Object();
-    obj3DSol.fltLargeur = 15;   // X
+    obj3DSol.fltLargeur = 31;   // X
     obj3DSol.fltHauteur = 0;    // Y
-    obj3DSol.fltProfondeur = 15;// Z
+    obj3DSol.fltProfondeur = 31;// Z
 
     obj3DSol.vertex = creerVertexSol(objgl, obj3DSol.fltLargeur, obj3DSol.fltProfondeur);
     obj3DSol.couleurs = creerCouleursSol(objgl, [1, 1, 1, 1]);
@@ -16,10 +16,10 @@ function creerObj3DSol(objgl, intNoTexture) {
 
 function creerVertexSol(objgl, fltLargeur, fltProfondeur) {
     var tabVertex = [
-        -fltLargeur / 2, 0.0, -fltProfondeur / 2,
-         fltLargeur / 2, 0.0, -fltProfondeur / 2,
-        -fltLargeur / 2, 0.0,  fltProfondeur / 2,
-         fltLargeur / 2, 0.0,  fltProfondeur / 2
+        0.0,        0.0, 0.0,
+        fltLargeur, 0.0, 0.0,
+        0.0,        0.0, fltProfondeur,
+        fltLargeur, 0.0, fltProfondeur
     ];
 
     var objSol = objgl.createBuffer();

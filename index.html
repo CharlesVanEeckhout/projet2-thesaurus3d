@@ -13,7 +13,9 @@
     <script type="text/javascript" src="librairies/Camera.js"></script>
     <script type="text/javascript" src="librairies/Textures.js"></script>
     <script type="text/javascript" src="sons/son.js"></script>
+    <script type="text/javascript" src="dedale.js"></script>
     <script type="text/javascript" src="objets3d/Sol.js"></script>
+    <script type="text/javascript" src="objets3d/Fleche.js"></script>
     <script type="text/javascript">
         // Variables 3D
         var objgl = null;
@@ -23,10 +25,12 @@
 
         const tabImages = [
             'objets3d/textures/Transparent.gif', 
-            'objets3d/textures/Sol.jpg'
+            'objets3d/textures/Sol.jpg',
+            'objets3d/textures/Fleche.png',
         ];
         const TEX_TRANSPARENT = 0;
         const TEX_SOL = 1;
+        const TEX_FLECHE = 2;
 
         // Variables de Jeu
         const intTempsAuDebutDunNiveau = 60000;
@@ -76,7 +80,7 @@
             intDatePassee = intDateActuelle;
             changeDeVue();
             if(binVueAerienne == false){
-                deplacerJoueur();
+                deplacerJoueur(intDeltaMillis);
             }
             
             effacerCanevas(objgl);
@@ -94,19 +98,38 @@
             var obj3DSol = creerObj3DSol(objgl, TEX_SOL);
             tabObjets3D.push(obj3DSol);
 
+            // Créer le dédale
+            for(var i = 0; i < tStrDedale.length; i++){
+                for(var j = 0; j < tStrDedale[i].length; j++){
+                    let obj3D = null;
+                    switch(tStrDedale[i][j]){
+                        case '.':
+                            break;
+                        default:
+                            obj3D = creerObj3DFleche(objgl, TEX_FLECHE);
+                            setEchelleZ(1/0.4, obj3D.transformations);
+                    }
+                    if(obj3D !== null){
+                        setPositionX(j+0.5, obj3D.transformations);
+                        setPositionZ(i+0.5, obj3D.transformations);
+                        tabObjets3D.push(obj3D);
+                    }
+                }
+            }
+
             // Mettre les objets 3D sur la scène
             objScene3D.tabObjets3D = tabObjets3D;
 
             // Les caméras
             objCameraJoueur = creerCamera();
-            setPositionsCameraXYZ([0, 0.5, 5], objCameraJoueur);
-            setCiblesCameraXYZ([0, 0.5, 0], objCameraJoueur);
+            setPositionsCameraXYZ([tStrDedale[0].length/2, 0.5, tStrDedale.length/2], objCameraJoueur);
+            setCiblesCameraXYZ([tStrDedale[0].length/2, 0.5, tStrDedale.length/2-5], objCameraJoueur);
             setOrientationsXYZ([0, 1, 0], objCameraJoueur);
 
             objCameraVueAerienne = creerCamera();
-            setPositionsCameraXYZ([0, 25, 0], objCameraVueAerienne);
-            setCiblesCameraXYZ([0, 0, 0], objCameraVueAerienne);
-            setOrientationsXYZ([0, 0, 1], objCameraVueAerienne);
+            setPositionsCameraXYZ([tStrDedale[0].length/2, 40, tStrDedale.length/2], objCameraVueAerienne);
+            setCiblesCameraXYZ([tStrDedale[0].length/2, 0, tStrDedale.length/2], objCameraVueAerienne);
+            setOrientationsXYZ([0, 0, -1], objCameraVueAerienne);
 
             objScene3D.camera = objCameraJoueur;
 
@@ -239,14 +262,14 @@
             }
         }
 
-        function deplacerJoueur() {
+        function deplacerJoueur(intDeltaMillis) {
             var camera = objCameraJoueur;
-
+            
             if (objClavier['ArrowLeft'] || objClavier['ArrowRight']) {
                 var fltX = getCibleCameraX(camera) - getPositionCameraX(camera);
                 var fltZ = getCibleCameraZ(camera) - getPositionCameraZ(camera);
                 var intDirection = (objClavier['ArrowLeft']) ? -1 : 1;
-                var fltAngle = intDirection * Math.PI / 180; // Tourner 1 degré
+                var fltAngle = intDirection * 0.0015 * intDeltaMillis; // Tourner 15/10000 radians par milliseconde
 
                 var fltXPrime = fltX * Math.cos(fltAngle) - fltZ * Math.sin(fltAngle);
                 var fltZPrime = fltX * Math.sin(fltAngle) + fltZ * Math.cos(fltAngle);
@@ -260,8 +283,8 @@
                 var fltRayon = Math.sqrt(fltX * fltX + fltZ * fltZ);
                 var intDirection = (objClavier['ArrowUp']) ? 1 : -1;
 
-                var fltXPrime = intDirection * 0.05 * Math.cos(Math.acos(fltX / fltRayon));
-                var fltZPrime = intDirection * 0.05 * Math.sin(Math.asin(fltZ / fltRayon));
+                var fltXPrime = intDirection * 0.003 * intDeltaMillis * Math.cos(Math.acos(fltX / fltRayon)); // Avancer de 3/1000 unites par milliseconde
+                var fltZPrime = intDirection * 0.003 * intDeltaMillis * Math.sin(Math.asin(fltZ / fltRayon));
 
                 setCibleCameraX(getCibleCameraX(camera) + fltXPrime, camera);
                 setCibleCameraZ(getCibleCameraZ(camera) + fltZPrime, camera);
