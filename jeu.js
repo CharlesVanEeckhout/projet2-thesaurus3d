@@ -45,6 +45,9 @@ function initNiveau() {
                 case '#':
                     obj3D = creerObj3DMur(objgl, TEX_MUR);
                     break;
+                case 'B':
+                    obj3D = creerObj3DMur(objgl, TEX_MURBETON);
+                    break;
                 default:
                     obj3D = creerObj3DFleche(objgl, TEX_FLECHE);
                     setEchelleZ(1/0.4, obj3D.transformations);
