@@ -18,34 +18,34 @@ function creerObj3DMur(objgl, intNoTexture) {
 function creerVertexMur(objgl, fltLargeur, fltHauteur, fltProfondeur) {
     var tabVertex = [
         //surface en avant
-        -fltLargeur, fltHauteur, fltProfondeur, //en haut, à gauche
-        fltLargeur, fltHauteur, fltProfondeur, //en haut, à droite
-        -fltLargeur, -fltHauteur, fltProfondeur, //en bas, à gauche
-        fltLargeur, -fltHauteur, fltProfondeur, //en bas, à droite,
+        -fltLargeur / 2, fltHauteur,  fltProfondeur / 2, //en haut, à gauche
+         fltLargeur / 2, fltHauteur,  fltProfondeur / 2, //en haut, à droite
+        -fltLargeur / 2, 0,           fltProfondeur / 2, //en bas, à gauche
+         fltLargeur / 2, 0,           fltProfondeur / 2, //en bas, à droite,
 
         //surface en arrière
-        -fltLargeur, fltHauteur, -fltProfondeur,
-        fltLargeur, fltHauteur, -fltProfondeur,
-        -fltLargeur, -fltHauteur, -fltProfondeur,
-        fltLargeur, -fltHauteur, -fltProfondeur,
+        -fltLargeur / 2, fltHauteur, -fltProfondeur / 2,
+         fltLargeur / 2, fltHauteur, -fltProfondeur / 2,
+        -fltLargeur / 2, 0,          -fltProfondeur / 2,
+         fltLargeur / 2, 0,          -fltProfondeur / 2,
 
         //surface à droite
-        fltLargeur, fltHauteur, fltProfondeur,
-        fltLargeur, fltHauteur, -fltProfondeur,
-        fltLargeur, -fltHauteur, fltProfondeur,
-        fltLargeur, -fltHauteur, -fltProfondeur,
+         fltLargeur / 2, fltHauteur,  fltProfondeur / 2,
+         fltLargeur / 2, fltHauteur, -fltProfondeur / 2,
+         fltLargeur / 2, 0,           fltProfondeur / 2,
+         fltLargeur / 2, 0,          -fltProfondeur / 2,
 
         //surface à gauche
-        -fltLargeur, fltHauteur, fltProfondeur,
-        -fltLargeur, fltHauteur, -fltProfondeur,
-        -fltLargeur, -fltHauteur, fltProfondeur,
-        -fltLargeur, -fltHauteur, -fltProfondeur,
+        -fltLargeur / 2, fltHauteur,  fltProfondeur / 2,
+        -fltLargeur / 2, fltHauteur, -fltProfondeur / 2,
+        -fltLargeur / 2, 0,           fltProfondeur / 2,
+        -fltLargeur / 2, 0,          -fltProfondeur / 2,
 
         //surface en haut
-        -fltLargeur, fltHauteur, -fltProfondeur,
-        fltLargeur, fltHauteur, -fltProfondeur,
-        -fltLargeur, fltHauteur, fltProfondeur,
-        fltLargeur, fltHauteur, fltProfondeur,
+        -fltLargeur / 2, fltHauteur, -fltProfondeur / 2,
+         fltLargeur / 2, fltHauteur, -fltProfondeur / 2,
+        -fltLargeur / 2, fltHauteur,  fltProfondeur / 2,
+         fltLargeur / 2, fltHauteur,  fltProfondeur / 2,
     ];
 
     var objMur = objgl.createBuffer();

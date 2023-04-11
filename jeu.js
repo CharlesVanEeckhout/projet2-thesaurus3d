@@ -4,7 +4,7 @@ var objClavier = null;
 
 var objCameraJoueur = null;
 var objCameraVueAerienne = null;
-var intNiveau = 10;
+var intNiveau = 5;
 var intScore = 300;
 var intTemps = 0;
 var intOuvreursDeMurs = 0;
@@ -37,6 +37,9 @@ function initNiveau() {
             let obj3D = null;
             switch(tStrDedale[i][j]){
                 case '.':
+                    break;
+                case '#':
+                    obj3D = creerObj3DMur(objgl, TEX_MUR);
                     break;
                 default:
                     obj3D = creerObj3DFleche(objgl, TEX_FLECHE);
@@ -73,7 +76,7 @@ function initNiveau() {
     for(var i = 0; i < intFleches; i++){
         let objPosition = tPositionsPossibles.splice(Math.floor(Math.random()*tPositionsPossibles.length), 1)[0];
         let obj3DFleche = creerObj3DFleche(objgl, TEX_FLECHE); //objet 3d fleche
-        setPositionsXYZ([objPosition.x+0.5, 1.5, objPosition.z+0.5], obj3DFleche.transformations);
+        setPositionsXYZ([objPosition.x+0.5, 1.25, objPosition.z+0.5], obj3DFleche.transformations);
         setAngleY(
             Math.atan2(-objPositionTresor.z+objPosition.z, objPositionTresor.x-objPosition.x) * 180 / Math.PI, 
             obj3DFleche.transformations); //rotation vers le tresor 
