@@ -2,7 +2,7 @@
 function creerObj3DMur(objgl, intNoTexture) {
     var obj3DMur = new Object();
     obj3DMur.fltLargeur = 1;
-    obj3DMur.fltHauteur = 1;
+    obj3DMur.fltHauteur = 2;
     obj3DMur.fltProfondeur = 1;
 
     obj3DMur.vertex = creerVertexMur(objgl, obj3DMur.fltLargeur, obj3DMur.fltHauteur, obj3DMur.fltProfondeur);

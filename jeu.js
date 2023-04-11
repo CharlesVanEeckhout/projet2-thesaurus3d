@@ -4,7 +4,7 @@ var objClavier = null;
 
 var objCameraJoueur = null;
 var objCameraVueAerienne = null;
-var intNiveau = 5;
+var intNiveau = 5; //devrait être 1 quand on remet le projet
 var intScore = 300;
 var intTemps = 0;
 var intOuvreursDeMurs = 0;
@@ -23,6 +23,10 @@ function initNiveau() {
     binVueAerienne = false;
     intTempsVueAerienne = 0;
     binTricherVueAerienne = false;
+
+    setPositionsCameraXYZ([tStrDedale[0].length/2, 0.5, tStrDedale.length/2], objCameraJoueur);
+    setCiblesCameraXYZ([tStrDedale[0].length/2, 0.8, tStrDedale.length/2-5], objCameraJoueur);
+    setOrientationsXYZ([0, 1, 0], objCameraJoueur);
 
     // Vider les objets
     objScene3D.tabObjets3D = new Array();
