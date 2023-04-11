@@ -14,7 +14,7 @@
     <script type="text/javascript" src="librairies/Transformations.js"></script>
     <script type="text/javascript" src="librairies/Camera.js"></script>
     <script type="text/javascript" src="librairies/Textures.js"></script>
-    <script type="text/javascript" src="objets3d/Fleche.js"></script> <!--CHANGE QUEL OBJET-->
+    <script type="text/javascript" src="objets3d/Mur.js"></script> <!--CHANGE QUEL OBJET-->
 
     <script type="text/javascript">
 
@@ -25,12 +25,16 @@
 
         var tabImages = [
             'objets3d/textures/Transparent.gif', 
+<<<<<<< Updated upstream
             'objets3d/textures/Fleche.jpg' // CHANGE QUELLE TEXTURE
+=======
+            'objets3d/textures/Mur.png' // CHANGE QUELLE TEXTURE
+>>>>>>> Stashed changes
         ]; 
         var TEX_TRANSPARENT = 0;
         var TEX_OBJ3D = 1;
 
-        var FUNC_OBJ3D = () => {return creerObj3DFleche(objgl, TEX_OBJ3D)}; // CHANGE L'APPEL DE LA FONCTION
+        var FUNC_OBJ3D = () => {return creerObj3DMur(objgl, TEX_OBJ3D)}; // CHANGE L'APPEL DE LA FONCTION
 
 
         function demarrer() {
