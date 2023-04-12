@@ -35,6 +35,11 @@ function initNiveau() {
     var obj3DSol = creerObj3DSol(objgl, TEX_SOL);
     objScene3D.tabObjets3D.push(obj3DSol);
 
+    // Créer le plafond
+    var obj3DPlafond = creerObj3DPlafond(objgl, TEX_SOL);
+    setPositionY(2, obj3DPlafond.transformations);
+    objScene3D.tabObjets3D.push(obj3DPlafond);
+
     // Créer le dédale
     for(var i = 0; i < tStrDedale.length; i++){
         for(var j = 0; j < tStrDedale[i].length; j++){
@@ -154,3 +159,42 @@ function deplacerJoueur(intDeltaMillis) {
         setPositionCameraZ(getPositionCameraZ(camera) + fltZPrime, camera);
     }
 }
+
+//inspiré par https://www.jeffreythompson.org/collision-detection/line-circle.php
+function collisionCercleLigneX(cx, cz, r, x, z1, z2){
+    if(Math.abs(cx - x) > r){
+        return false;
+    }
+    var minZ = Math.min(z1, z2);
+    var maxZ = Math.max(z1, z2);
+    var lZ = Math.min(Math.max(cz, minZ), maxZ);
+    var distance = Math.sqrt((cx-x)*(cx-x) + (cz-lZ)*(cz-lZ));
+    if(distance > r){
+        return false;
+    }
+    var angle = Math.atan2(cz-lZ, cx-x);
+    var newX = cx + (radius-distance)*Math.cos(angle);
+    var newZ = cz + (radius-distance)*Math.sin(angle);
+    return {x: newX, z: newZ};
+};
+
+function collisionCercleLigneZ(cx, cz, r, x1, x2, z){
+    if(Math.abs(cz - z) > r){
+        return false;
+    }
+    var minX = Math.min(x1, x2);
+    var maxX = Math.max(x1, x2);
+    var lX = Math.min(Math.max(cx, minX), maxX);
+    var distance = Math.sqrt((cx-lX)*(cx-lX) + (cz-z)*(cz-z));
+    if(distance > r){
+        return false;
+    }
+    var angle = Math.atan2(cz-z, cx-lX);
+    var newX = cx + (radius-distance)*Math.cos(angle);
+    var newZ = cz + (radius-distance)*Math.sin(angle);
+    return {x: newX, z: newZ};
+};
+
+function collisionJoueurMur(){
+    //todo
+};

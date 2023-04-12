@@ -2,7 +2,7 @@
 function creerObj3DSol(objgl, intNoTexture) {
     var obj3DSol = new Object();
     obj3DSol.fltLargeur = 31;   // X
-    obj3DSol.fltHauteur = 0;    // Y
+    //obj3DSol.fltHauteur = 0;    // Y
     obj3DSol.fltProfondeur = 31;// Z
 
     obj3DSol.vertex = creerVertexSol(objgl, obj3DSol.fltLargeur, obj3DSol.fltProfondeur);

@@ -1,25 +1,25 @@
 
-function creerobj3DPlafond(objgl, intNoTexture) {
+function creerObj3DPlafond(objgl, intNoTexture) {
     var obj3DPlafond = new Object();
-    obj3DPlafond.fltLargeur = 15;   // X
-    obj3DPlafond.fltHauteur = 5;    // Y
-    obj3DPlafond.fltProfondeur = 15;// Z
+    obj3DPlafond.fltLargeur = 31;   // X
+    //obj3DPlafond.fltHauteur = 0;    // Y
+    obj3DPlafond.fltProfondeur = 31;// Z
 
     obj3DPlafond.vertex = creerVertexPlafond(objgl, obj3DPlafond.fltLargeur, obj3DPlafond.fltProfondeur);
     obj3DPlafond.couleurs = creerCouleursPlafond(objgl, [1, 1, 1, 1]);
-    obj3DPlafond.texels = creerTexelsPlafond(objgl, obj3DPlafond.fltLargeur, obj3DPlafond.fltHauteur, obj3DPlafond.fltProfondeur, intNoTexture);
+    obj3DPlafond.texels = creerTexelsPlafond(objgl, obj3DPlafond.fltLargeur, obj3DPlafond.fltProfondeur, intNoTexture);
     obj3DPlafond.maillage = creerMaillagePlafond(objgl);
 
     obj3DPlafond.transformations = creerTransformations();
     return obj3DPlafond;
 }
 
-function creerVertexPlafond(objgl, fltLargeur, fltHauteur, fltProfondeur) {
+function creerVertexPlafond(objgl, fltLargeur, fltProfondeur) {
     var tabVertex = [
-        -fltLargeur / 2, fltHauteur / 2, -fltProfondeur / 2,
-         fltLargeur / 2, fltHauteur / 2, -fltProfondeur / 2,
-        -fltLargeur / 2, fltHauteur / 2,  fltProfondeur / 2,
-         fltLargeur / 2, fltHauteur / 2,  fltProfondeur / 2
+        0.0,        0.0, 0.0,
+        fltLargeur, 0.0, 0.0,
+        0.0,        0.0, fltProfondeur,
+        fltLargeur, 0.0, fltProfondeur
     ];
 
     var objPlafond = objgl.createBuffer();
