@@ -1,5 +1,5 @@
 
-function creerObj3DMur(objgl, intNoTexture) {
+function creerObj3DMur(objgl, intNoTexture, binBeton) {
     var obj3DMur = new Object();
     obj3DMur.fltLargeur = 1;
     obj3DMur.fltHauteur = 2;
@@ -12,6 +12,9 @@ function creerObj3DMur(objgl, intNoTexture) {
     obj3DMur.maillage = creerMaillageMur(objgl);
     
     obj3DMur.transformations = creerTransformations();
+
+    obj3DMur.collisionMur = true;
+    obj3DMur.binBeton = binBeton || false;
     return obj3DMur;
 }
 
