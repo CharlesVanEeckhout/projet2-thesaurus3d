@@ -71,11 +71,6 @@ function creerTexelsTeleTransporteur(objgl, fltLargeur, fltHauteur, fltProfondeu
         tabTexels = tabTexels.concat([centre1 + centre1 * Math.cos(i * Math.PI / 180), 0.5 + 0.5 * Math.sin(i * Math.PI / 180)]);
     }
 
-
-[0,1]
-[0.5,1]
-
-[0.5, 0]
     tabTexels = tabTexels.concat([0.5, 0.5])
     for (var i = 0; i <= 360; i++) {
         tabTexels = tabTexels.concat([(i/360)*0.5 + 0.5, 0.0]);
