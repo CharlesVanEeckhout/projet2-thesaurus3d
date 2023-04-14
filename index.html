@@ -78,8 +78,8 @@
             let intDeltaMillis = intDateActuelle - intDatePassee;
             intDatePassee = intDateActuelle;
 
-            fltTemps -= intDeltaMillis;
-            fltTemps = Math.max(fltTemps, 0);
+            intTemps -= intDeltaMillis;
+            intTemps = Math.max(intTemps, 0);
             changeDeVue();
             if(binVueAerienne == false){
                 deplacerJoueur(intDeltaMillis);

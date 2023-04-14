@@ -6,7 +6,7 @@ var objCameraJoueur = null;
 var objCameraVueAerienne = null;
 var intNiveau = 5; //devrait être 1 quand on remet le projet
 var intScore = 300;
-var fltTemps = 0; //en millisecondes
+var intTemps = 0; //en millisecondes
 var intOuvreursDeMurs = 0;
 var binVueAerienne = false;
 var intTempsVueAerienne = 0;
@@ -15,7 +15,7 @@ var tObjNiveau = [];
 
 
 function initNiveau() {
-    fltTemps = intTempsAuDebutDunNiveau;
+    intTemps = intTempsAuDebutDunNiveau;
     intOuvreursDeMurs = Math.floor((10 - intNiveau) / 2);
     let intFleches = (10 - intNiveau) * 2;
     let intTeleTransporteurs = Math.floor(intNiveau / 2);
@@ -251,7 +251,7 @@ function miseAJourHUD() {
 
     //ouvreurs
     if(intScore < 50){
-        objHUDOuvreursTxt.style.color = ['inherit', 'red'][Math.floor(fltTemps*2)%2]; //couleur clignote rouge
+        objHUDOuvreursTxt.style.color = ['inherit', 'red'][Math.floor(intTemps/500)%2]; //couleur clignote rouge
     }
     else{
         objHUDOuvreursTxt.style.color = 'inherit';
@@ -266,8 +266,8 @@ function miseAJourHUD() {
     }
 
     //timer
-    objHUDTimerSec.innerHTML = Math.floor(fltTemps/1000).toString().padStart(2, '0');
-    objHUDTimerMillis.innerHTML = Math.floor(fltTemps%1000).toString().padStart(3, '0');
+    objHUDTimerSec.innerHTML = Math.floor(intTemps/1000).toString().padStart(2, '0');
+    objHUDTimerMillis.innerHTML = Math.floor(intTemps%1000).toString().padStart(3, '0');
 
     //niveau
     objHUDNiveau.innerHTML = "Niveau "+intNiveau.toString().padStart(2, '0');
