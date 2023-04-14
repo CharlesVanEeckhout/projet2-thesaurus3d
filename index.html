@@ -77,6 +77,9 @@
             let intDateActuelle = new Date();
             let intDeltaMillis = intDateActuelle - intDatePassee;
             intDatePassee = intDateActuelle;
+
+            fltTemps -= intDeltaMillis;
+            fltTemps = Math.max(fltTemps, 0);
             changeDeVue();
             if(binVueAerienne == false){
                 deplacerJoueur(intDeltaMillis);
@@ -88,7 +91,8 @@
                     obj.animation(intDeltaMillis);
                 }
             }
-            
+            miseAJourHUD();
+
             effacerCanevas(objgl);
             dessiner(objgl, objProgShaders, objScene3D);
         }
@@ -243,18 +247,18 @@
     <canvas id="monCanvas" width="640" height="640" tabIndex="1" onkeydown="onKeyDown(); return false" onkeyup="onKeyUp()">
         Votre navigateur ne supporte pas la balise canvas
     </canvas>
-    <div style="background-color:lightgray; color: black; font-family:monospace; width:640px">
+    <div style="background-color:gray; color: black; font-family:monospace; width:640px">
         <div class="row">
             <div class="col">
-                <div class="fs-5 px-2">Ouvreurs:</div>
-                <div id="HUDOuvreurs" class="px-2"></div>
+                <div id="HUDOuvreursTxt" class="fs-5 px-2">Ouvreurs:</div>
+                <div id="HUDOuvreursImg" class="px-2"></div>
             </div>
             <div class="text-center col">
                 <span id="HUDTimerSec" class="fs-1">60</span>
                 <span id="HUDTimerMillis" class="fs-2">000</span>
             </div>
             <div class="col">
-                <div id="HUDNiveau" class="text-end fs-6 px-2">Niveau 01</div>
+                <div id="HUDNiveau" class="text-end fs-6 px-2">Niveau --</div>
                 <div id="HUDScore" class="text-end fs-5 px-2">xyz pts</div>
             </div>
         </div>

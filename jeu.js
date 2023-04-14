@@ -6,7 +6,7 @@ var objCameraJoueur = null;
 var objCameraVueAerienne = null;
 var intNiveau = 5; //devrait être 1 quand on remet le projet
 var intScore = 300;
-var intTemps = 0;
+var fltTemps = 0; //en millisecondes
 var intOuvreursDeMurs = 0;
 var binVueAerienne = false;
 var intTempsVueAerienne = 0;
@@ -15,7 +15,7 @@ var tObjNiveau = [];
 
 
 function initNiveau() {
-    intTemps = intTempsAuDebutDunNiveau;
+    fltTemps = intTempsAuDebutDunNiveau;
     intOuvreursDeMurs = Math.floor((10 - intNiveau) / 2);
     let intFleches = (10 - intNiveau) * 2;
     let intTeleTransporteurs = Math.floor(intNiveau / 2);
@@ -106,10 +106,6 @@ function initNiveau() {
         setPositionsXYZ([objPosition.x + 0.5, 0, objPosition.z + 0.5], obj3DTeleTransporteur.transformations);
         tObjNiveau[objPosition.z][objPosition.x] = obj3DTeleTransporteur;
     }
-    //debug
-    let obj3DTeleTransporteur = creerObj3DTeleTransporteur(objgl, TEX_TELETRANSPORTEUR); //objet 3d tele-transporteur
-        setPositionsXYZ([12 + 0.5, 0, 12 + 0.5], obj3DTeleTransporteur.transformations);
-        tObjNiveau[12][12] = obj3DTeleTransporteur;
 
     // place les tele-recepteurs
     for (var i = 0; i < intTeleRecepteurs; i++) {
@@ -242,4 +238,40 @@ function collisionJoueurMurs() {
             setPositionCameraZ(getPositionCameraZ(joueur) + fltZPrime, joueur);
         }
     }
+}
+
+
+function miseAJourHUD() {
+    let objHUDOuvreursTxt = document.getElementById("HUDOuvreursTxt");
+    let objHUDOuvreursImg = document.getElementById("HUDOuvreursImg");
+    let objHUDTimerSec = document.getElementById("HUDTimerSec");
+    let objHUDTimerMillis = document.getElementById("HUDTimerMillis");
+    let objHUDNiveau = document.getElementById("HUDNiveau");
+    let objHUDScore = document.getElementById("HUDScore");
+
+    //ouvreurs
+    if(intScore < 50){
+        objHUDOuvreursTxt.style.color = ['inherit', 'red'][Math.floor(fltTemps*2)%2]; //couleur clignote rouge
+    }
+    else{
+        objHUDOuvreursTxt.style.color = 'inherit';
+    }
+
+    var strOuvreursImg = "";
+    for(var i = 0; i < intOuvreursDeMurs; i++){
+        strOuvreursImg += '<img src="./ouvreur.png" alt="X">';
+    }
+    if(objHUDOuvreursImg.innerHTML !== strOuvreursImg){
+        objHUDOuvreursImg.innerHTML = strOuvreursImg;
+    }
+
+    //timer
+    objHUDTimerSec.innerHTML = Math.floor(fltTemps/1000).toString().padStart(2, '0');
+    objHUDTimerMillis.innerHTML = Math.floor(fltTemps%1000).toString().padStart(3, '0');
+
+    //niveau
+    objHUDNiveau.innerHTML = "Niveau "+intNiveau.toString().padStart(2, '0');
+
+    //score
+    objHUDScore.innerHTML = intScore+" pts";
 }
