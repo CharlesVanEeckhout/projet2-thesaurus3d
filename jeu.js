@@ -18,8 +18,8 @@ function initNiveau() {
     intTemps = intTempsAuDebutDunNiveau;
     intOuvreursDeMurs = Math.floor((10 - intNiveau) / 2);
     let intFleches = (10 - intNiveau) * 2;
-    let intTeletransporteurs = Math.floor(intNiveau / 2);
-    let intTelerecepteurs = intNiveau - 1;
+    let intTeleTransporteurs = Math.floor(intNiveau / 2);
+    let intTeleRecepteurs = intNiveau - 1;
     binVueAerienne = false;
     intTempsVueAerienne = 0;
     binTricherVueAerienne = false;
@@ -47,12 +47,16 @@ function initNiveau() {
             switch (tStrDedale[i][j]) {
                 case '.':
                     break;
+                case ',':
+                    obj3D = creerObj3DTapis(objgl, TEX_TAPIS);
+                    break;
                 case '#':
                     obj3D = creerObj3DMur(objgl, TEX_MUR, false);
                     break;
                 case 'B':
                     obj3D = creerObj3DMur(objgl, TEX_MURBETON, true);
                     break;
+                
                 default:
                     obj3D = creerObj3DFleche(objgl, TEX_FLECHE);
                     setEchelleZ(1 / 0.4, obj3D.transformations);
@@ -96,21 +100,24 @@ function initNiveau() {
     }
 
     // place les tele-transporteurs
-    for (var i = 0; i < intTeletransporteurs; i++) {
+    for (var i = 0; i < intTeleTransporteurs; i++) {
         let objPosition = tPositionsPossibles.splice(Math.floor(Math.random() * tPositionsPossibles.length), 1)[0];
-        let obj3DTeletransporteur = creerObj3DFleche(objgl, TEX_FLECHE); //objet 3d fleche
-        setAngleZ(90, obj3DTeletransporteur.transformations);
-        setPositionsXYZ([objPosition.x + 0.5, 0, objPosition.z + 0.5], obj3DTeletransporteur.transformations);
-        tObjNiveau[objPosition.z][objPosition.x] = obj3DTeletransporteur;
+        let obj3DTeleTransporteur = creerObj3DTeleTransporteur(objgl, TEX_TELETRANSPORTEUR); //objet 3d tele-transporteur
+        setPositionsXYZ([objPosition.x + 0.5, 0, objPosition.z + 0.5], obj3DTeleTransporteur.transformations);
+        tObjNiveau[objPosition.z][objPosition.x] = obj3DTeleTransporteur;
     }
+    //debug
+    let obj3DTeleTransporteur = creerObj3DTeleTransporteur(objgl, TEX_TELETRANSPORTEUR); //objet 3d tele-transporteur
+        setPositionsXYZ([12 + 0.5, 0, 12 + 0.5], obj3DTeleTransporteur.transformations);
+        tObjNiveau[12][12] = obj3DTeleTransporteur;
 
     // place les tele-recepteurs
-    for (var i = 0; i < intTelerecepteurs; i++) {
+    for (var i = 0; i < intTeleRecepteurs; i++) {
         let objPosition = tPositionsPossibles.splice(Math.floor(Math.random() * tPositionsPossibles.length), 1)[0];
-        let obj3DTelerecepteur = creerObj3DFleche(objgl, TEX_FLECHE); //objet 3d fleche
-        setAngleZ(-90, obj3DTelerecepteur.transformations);
-        setPositionsXYZ([objPosition.x + 0.5, 0, objPosition.z + 0.5], obj3DTelerecepteur.transformations);
-        tObjNiveau[objPosition.z][objPosition.x] = obj3DTelerecepteur;
+        let obj3DTeleRecepteur = creerObj3DFleche(objgl, TEX_FLECHE); //objet 3d fleche
+        setAngleZ(-90, obj3DTeleRecepteur.transformations);
+        setPositionsXYZ([objPosition.x + 0.5, 0, objPosition.z + 0.5], obj3DTeleRecepteur.transformations);
+        tObjNiveau[objPosition.z][objPosition.x] = obj3DTeleRecepteur;
     }
 
     // ajoute tous les objets du niveau à la scène
@@ -164,7 +171,6 @@ function deplacerJoueur(intDeltaMillis) {
 
 //inspiré par https://www.jeffreythompson.org/collision-detection/line-circle.php
 function collisionCercleLigneX(cX, cZ, cRayon, lX, lZ1, lZ2) {
-    console.log(arguments);
     if (Math.abs(cX - lX) > cRayon) {
         return false;
     }
@@ -182,7 +188,6 @@ function collisionCercleLigneX(cX, cZ, cRayon, lX, lZ1, lZ2) {
 }
 
 function collisionCercleLigneZ(cX, cZ, cRayon, lX1, lX2, lZ) {
-    console.log(arguments);
     if (Math.abs(cZ - lZ) > cRayon) {
         return false;
     }
@@ -218,20 +223,16 @@ function collisionJoueurMurs() {
         if (Math.abs(fltDistX) > 1 || Math.abs(fltDistZ) > 1) {
             continue; //mur est trop loin pour une collision
         }
-        console.log('murProche' + (new Date()).getMilliseconds());
 
         let objColl;
         if (Math.abs(fltDistX) > Math.abs(fltDistZ)) { //collision w ligne X, Math.sign détermine si c'est le mur positif ou le mur négatif
-            console.log('x');
             objColl = collisionCercleLigneX(fltJoueurX, fltJoueurZ, fltJoueurRayon,
                 fltObjX + (obj.fltLargeur / 2 * -Math.sign(fltDistX)), fltObjZ - obj.fltProfondeur / 2, fltObjZ + obj.fltProfondeur / 2);
         }
         else { //collision w ligne Z
-            console.log('z');
             objColl = collisionCercleLigneZ(fltJoueurX, fltJoueurZ, fltJoueurRayon,
                 fltObjX - obj.fltLargeur / 2, fltObjX + obj.fltLargeur / 2, fltObjZ + (obj.fltProfondeur / 2 * -Math.sign(fltDistZ)));
         }
-        console.log(objColl);
         if (objColl !== false) {
             let fltXPrime = objColl.x - fltJoueurX;
             let fltZPrime = objColl.z - fltJoueurZ;

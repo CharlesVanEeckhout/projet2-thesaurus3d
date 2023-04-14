@@ -19,6 +19,7 @@
     <script type="text/javascript" src="objets3d/Plafond.js"></script>
     <script type="text/javascript" src="objets3d/Fleche.js"></script>
     <script type="text/javascript" src="objets3d/Mur.js"></script>
+    <script type="text/javascript" src="objets3d/Tapis.js"></script>
     <script type="text/javascript" src="objets3d/Teletransporteur.js"></script>
     <script type="text/javascript" src="jeu.js"></script>
     <script type="text/javascript">
@@ -33,12 +34,16 @@
             'objets3d/textures/Fleche.png',
             'objets3d/textures/mur.png',
             'objets3d/textures/murBeton.jpg',
+            'objets3d/textures/tapis.png',
+            'objets3d/textures/teleTransporteur.jpg',
         ];
         const TEX_TRANSPARENT = 0;
         const TEX_SOL = 1;
         const TEX_FLECHE = 2;
         const TEX_MUR = 3;
         const TEX_MURBETON = 4;
+        const TEX_TAPIS = 5;
+        const TEX_TELETRANSPORTEUR = 6;
 
 
         function demarrer() {
@@ -75,6 +80,13 @@
             changeDeVue();
             if(binVueAerienne == false){
                 deplacerJoueur(intDeltaMillis);
+            }
+
+            for(var obj of objScene3D.tabObjets3D){
+                if(obj.animation !== undefined){
+                    //console.log("hey");
+                    obj.animation(intDeltaMillis);
+                }
             }
             
             effacerCanevas(objgl);

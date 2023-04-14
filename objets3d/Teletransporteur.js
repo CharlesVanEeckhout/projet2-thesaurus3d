@@ -10,6 +10,19 @@ function creerObj3DTeleTransporteur(objgl, intNoTexture) {
     obj3DTeleTransporteur.texels = creerTexelsTeleTransporteur(objgl, obj3DTeleTransporteur.fltLargeur, obj3DTeleTransporteur.fltHauteur, obj3DTeleTransporteur.fltProfondeur, intNoTexture);
     obj3DTeleTransporteur.maillage = creerMaillageTeleTransporteur(objgl);
     obj3DTeleTransporteur.transformations = creerTransformations();
+
+    obj3DTeleTransporteur.scrollTexture = 0;
+    obj3DTeleTransporteur.animation = function(intDeltaMillis){
+        obj3DTeleTransporteur.scrollTexture = (obj3DTeleTransporteur.scrollTexture + 0.0005*intDeltaMillis) % 1;
+        
+        objgl.bindBuffer(objgl.ARRAY_BUFFER, obj3DTeleTransporteur.texels);
+        for(var i = 362*2; i < 362*3; i++){
+            objgl.bufferSubData(objgl.ARRAY_BUFFER, 4*(i*2+1), new Float32Array([obj3DTeleTransporteur.scrollTexture]));
+        }
+        for(var i = 362*3; i < 362*4; i++){
+            objgl.bufferSubData(objgl.ARRAY_BUFFER, 4*(i*2+1), new Float32Array([obj3DTeleTransporteur.scrollTexture+1.0]));
+        }
+    }
     return obj3DTeleTransporteur;
 }
 
@@ -83,7 +96,7 @@ function creerTexelsTeleTransporteur(objgl, fltLargeur, fltHauteur, fltProfondeu
 
     var objTexelsTeleTransporteur = objgl.createBuffer();
     objgl.bindBuffer(objgl.ARRAY_BUFFER, objTexelsTeleTransporteur);
-    objgl.bufferData(objgl.ARRAY_BUFFER, new Float32Array(tabTexels), objgl.STATIC_DRAW);
+    objgl.bufferData(objgl.ARRAY_BUFFER, new Float32Array(tabTexels), objgl.DYNAMIC_DRAW);
 
     objTexelsTeleTransporteur.intNoTexture = intNoTexture; objTexelsTeleTransporteur.pcCouleurTexel = 1.0;
 
