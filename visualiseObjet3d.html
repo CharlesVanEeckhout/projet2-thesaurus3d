@@ -14,7 +14,7 @@
     <script type="text/javascript" src="librairies/Transformations.js"></script>
     <script type="text/javascript" src="librairies/Camera.js"></script>
     <script type="text/javascript" src="librairies/Textures.js"></script>
-    <script type="text/javascript" src="objets3d/Coffre.js"></script> <!--CHANGE QUEL OBJET-->
+    <script type="text/javascript" src="objets3d/Cloture.js"></script> <!--CHANGE QUEL OBJET-->
 
     <script type="text/javascript">
 
@@ -25,12 +25,12 @@
 
         var tabImages = [
             'objets3d/textures/Transparent.gif', 
-            'objets3d/textures/coffre.jpg' // CHANGE QUELLE TEXTURE
+            'objets3d/textures/Fleche.png' // CHANGE QUELLE TEXTURE
         ]; 
         var TEX_TRANSPARENT = 0;
         var TEX_OBJ3D = 1;
 
-        var FUNC_OBJ3D = () => {return creerObj3DCoffre(objgl, TEX_OBJ3D)}; // CHANGE L'APPEL DE LA FONCTION
+        var FUNC_OBJ3D = () => {return creerObj3DCloture(objgl, TEX_OBJ3D)}; // CHANGE L'APPEL DE LA FONCTION
 
 
         function demarrer() {

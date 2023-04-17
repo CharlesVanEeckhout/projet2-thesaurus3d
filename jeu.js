@@ -68,7 +68,9 @@ function initNiveau() {
                 case 'B':
                     obj3D = creerObj3DMur(objgl, TEX_MURBETON, true);
                     break;
-
+                case '=':
+                    obj3D = creerObj3DCloture(objgl, TEX_CLOTURE);
+                    break;
                 default:
                     obj3D = creerObj3DFleche(objgl, TEX_FLECHE);
                     setEchelleZ(1 / 0.4, obj3D.transformations);
