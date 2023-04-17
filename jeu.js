@@ -40,6 +40,18 @@ function initNiveau() {
     setPositionY(2, obj3DPlafond.transformations);
     objScene3D.tabObjets3D.push(obj3DPlafond);
 
+    // trouve positions possibles pour objets aléatoires du niveau
+    let tPositionsPossibles = [];
+    for (var i = 0; i < tStrDedale.length; i++) {
+        tObjNiveau[i] = [];
+        for (var j = 0; j < tStrDedale[i].length; j++) {
+            tObjNiveau[i][j] = null;
+            if (tStrDedale[i][j] == '.') {
+                tPositionsPossibles.push({ x: j, z: i });
+            }
+        }
+    }
+
     // Créer le dédale
     for (var i = 0; i < tStrDedale.length; i++) {
         for (var j = 0; j < tStrDedale[i].length; j++) {
@@ -56,7 +68,7 @@ function initNiveau() {
                 case 'B':
                     obj3D = creerObj3DMur(objgl, TEX_MURBETON, true);
                     break;
-                
+
                 default:
                     obj3D = creerObj3DFleche(objgl, TEX_FLECHE);
                     setEchelleZ(1 / 0.4, obj3D.transformations);
@@ -64,29 +76,16 @@ function initNiveau() {
             if (obj3D !== null) {
                 setPositionX(j + 0.5, obj3D.transformations);
                 setPositionZ(i + 0.5, obj3D.transformations);
-                objScene3D.tabObjets3D.push(obj3D);
-            }
-        }
-    }
-
-    // trouve positions possibles pour objets du niveau
-    let tPositionsPossibles = [];
-    for (var i = 0; i < tStrDedale.length; i++) {
-        tObjNiveau[i] = [];
-        for (var j = 0; j < tStrDedale[i].length; j++) {
-            tObjNiveau[i][j] = null;
-            if (tStrDedale[i][j] == '.') {
-                tPositionsPossibles.push({ x: j, z: i });
+                tObjNiveau[i][j] = obj3D;
             }
         }
     }
 
     // place le tresor
     let objPositionTresor = tPositionsPossibles.splice(Math.floor(Math.random() * tPositionsPossibles.length), 1)[0];
-    let obj3DTresor = creerObj3DFleche(objgl, TEX_FLECHE);
+    let obj3DTresor = creerObj3DCoffre(objgl, TEX_COFFRE); //objet 3d tresor
     setPositionsXYZ([objPositionTresor.x + 0.5, 0, objPositionTresor.z + 0.5], obj3DTresor.transformations);
-    setEchellesXYZ([0.5, 2.5, 0.5], obj3DTresor.transformations);
-    tObjNiveau[objPositionTresor.z][objPositionTresor.x] = obj3DTresor; //objet 3d tresor
+    tObjNiveau[objPositionTresor.z][objPositionTresor.x] = obj3DTresor;
 
     // place les fleches
     for (var i = 0; i < intFleches; i++) {
@@ -110,8 +109,7 @@ function initNiveau() {
     // place les tele-recepteurs
     for (var i = 0; i < intTeleRecepteurs; i++) {
         let objPosition = tPositionsPossibles.splice(Math.floor(Math.random() * tPositionsPossibles.length), 1)[0];
-        let obj3DTeleRecepteur = creerObj3DFleche(objgl, TEX_FLECHE); //objet 3d fleche
-        setAngleZ(-90, obj3DTeleRecepteur.transformations);
+        let obj3DTeleRecepteur = creerObj3DTeleRecepteur(objgl, TEX_TELERECEPTEUR); //objet 3d tele-recepteur
         setPositionsXYZ([objPosition.x + 0.5, 0, objPosition.z + 0.5], obj3DTeleRecepteur.transformations);
         tObjNiveau[objPosition.z][objPosition.x] = obj3DTeleRecepteur;
     }
@@ -250,28 +248,28 @@ function miseAJourHUD() {
     let objHUDScore = document.getElementById("HUDScore");
 
     //ouvreurs
-    if(intScore < 50){
-        objHUDOuvreursTxt.style.color = ['inherit', 'red'][Math.floor(intTemps/500)%2]; //couleur clignote rouge
+    if (intScore < 50) {
+        objHUDOuvreursTxt.style.color = ['inherit', 'red'][Math.floor(intTemps / 500) % 2]; //couleur clignote rouge
     }
-    else{
+    else {
         objHUDOuvreursTxt.style.color = 'inherit';
     }
 
     var strOuvreursImg = "";
-    for(var i = 0; i < intOuvreursDeMurs; i++){
+    for (var i = 0; i < intOuvreursDeMurs; i++) {
         strOuvreursImg += '<img src="./ouvreur.png" alt="X">';
     }
-    if(objHUDOuvreursImg.innerHTML !== strOuvreursImg){
+    if (objHUDOuvreursImg.innerHTML !== strOuvreursImg) {
         objHUDOuvreursImg.innerHTML = strOuvreursImg;
     }
 
     //timer
-    objHUDTimerSec.innerHTML = Math.floor(intTemps/1000).toString().padStart(2, '0');
-    objHUDTimerMillis.innerHTML = Math.floor(intTemps%1000).toString().padStart(3, '0');
+    objHUDTimerSec.innerHTML = Math.floor(intTemps / 1000).toString().padStart(2, '0');
+    objHUDTimerMillis.innerHTML = Math.floor(intTemps % 1000).toString().padStart(3, '0');
 
     //niveau
-    objHUDNiveau.innerHTML = "Niveau "+intNiveau.toString().padStart(2, '0');
+    objHUDNiveau.innerHTML = "Niveau " + intNiveau.toString().padStart(2, '0');
 
     //score
-    objHUDScore.innerHTML = intScore+" pts";
+    objHUDScore.innerHTML = intScore + " pts";
 }

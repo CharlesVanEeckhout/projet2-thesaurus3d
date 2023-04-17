@@ -1,32 +1,32 @@
 
-function creerObj3DTelerecepteur(objgl, intNoTexture) {
-    var obj3DTelerecepteur = new Object();
-    obj3DTelerecepteur.fltLargeur = 1;
-    obj3DTelerecepteur.fltHauteur = 1.5;
-    obj3DTelerecepteur.fltProfondeur = 1;
+function creerObj3DTeleRecepteur(objgl, intNoTexture) {
+    var obj3DTeleRecepteur = new Object();
+    obj3DTeleRecepteur.fltLargeur = 1;
+    obj3DTeleRecepteur.fltHauteur = 1.5;
+    obj3DTeleRecepteur.fltProfondeur = 1;
 
-    obj3DTelerecepteur.vertex = creerVertexTelerecepteur(objgl, obj3DTelerecepteur.fltLargeur, obj3DTelerecepteur.fltHauteur, obj3DTelerecepteur.fltProfondeur);
-    obj3DTelerecepteur.couleurs = creerCouleursTelerecepteur(objgl, [1, 1, 1, 1]);
-    obj3DTelerecepteur.texels = creerTexelsTelerecepteur(objgl, obj3DTelerecepteur.fltLargeur, obj3DTelerecepteur.fltHauteur, obj3DTelerecepteur.fltProfondeur, intNoTexture);
-    obj3DTelerecepteur.maillage = creerMaillageTelerecepteur(objgl);
-    obj3DTelerecepteur.transformations = creerTransformations();
+    obj3DTeleRecepteur.vertex = creerVertexTeleRecepteur(objgl, obj3DTeleRecepteur.fltLargeur, obj3DTeleRecepteur.fltHauteur, obj3DTeleRecepteur.fltProfondeur);
+    obj3DTeleRecepteur.couleurs = creerCouleursTeleRecepteur(objgl, [1, 1, 1, 1]);
+    obj3DTeleRecepteur.texels = creerTexelsTeleRecepteur(objgl, obj3DTeleRecepteur.fltLargeur, obj3DTeleRecepteur.fltHauteur, obj3DTeleRecepteur.fltProfondeur, intNoTexture);
+    obj3DTeleRecepteur.maillage = creerMaillageTeleRecepteur(objgl);
+    obj3DTeleRecepteur.transformations = creerTransformations();
 
-    obj3DTelerecepteur.scrollTexture = 0;
-    obj3DTelerecepteur.animation = function(intDeltaMillis){
-        obj3DTelerecepteur.scrollTexture = (obj3DTelerecepteur.scrollTexture - 0.0005*intDeltaMillis) % 1;
+    obj3DTeleRecepteur.scrollTexture = 0;
+    obj3DTeleRecepteur.animation = function(intDeltaMillis){
+        obj3DTeleRecepteur.scrollTexture = (obj3DTeleRecepteur.scrollTexture - 0.0005*intDeltaMillis) % 1;
         
-        objgl.bindBuffer(objgl.ARRAY_BUFFER, obj3DTelerecepteur.texels);
+        objgl.bindBuffer(objgl.ARRAY_BUFFER, obj3DTeleRecepteur.texels);
         for(var i = 362*2; i < 362*3; i++){
-            objgl.bufferSubData(objgl.ARRAY_BUFFER, 4*(i*2+1), new Float32Array([obj3DTelerecepteur.scrollTexture]));
+            objgl.bufferSubData(objgl.ARRAY_BUFFER, 4*(i*2+1), new Float32Array([obj3DTeleRecepteur.scrollTexture]));
         }
         for(var i = 362*3; i < 362*4; i++){
-            objgl.bufferSubData(objgl.ARRAY_BUFFER, 4*(i*2+1), new Float32Array([obj3DTelerecepteur.scrollTexture+1.0]));
+            objgl.bufferSubData(objgl.ARRAY_BUFFER, 4*(i*2+1), new Float32Array([obj3DTeleRecepteur.scrollTexture+1.0]));
         }
     }
-    return obj3DTelerecepteur;
+    return obj3DTeleRecepteur;
 }
 
-function creerVertexTelerecepteur(objgl, fltLargeur, fltHauteur, fltProfondeur) {
+function creerVertexTeleRecepteur(objgl, fltLargeur, fltHauteur, fltProfondeur) {
     var tabVertex = [0, fltHauteur, 0] // Le centre du cercle (0)
     for (var i = 0; i <= 360; i++) { //1-361
         tabVertex = tabVertex.concat([Math.cos(i * Math.PI / 180) * fltLargeur / 2, fltHauteur, Math.sin(i * Math.PI / 180) * fltProfondeur / 2]);
@@ -47,14 +47,14 @@ function creerVertexTelerecepteur(objgl, fltLargeur, fltHauteur, fltProfondeur) 
         tabVertex = tabVertex.concat([Math.cos(i * Math.PI / 180) * fltLargeur / 3, 0, Math.sin(i * Math.PI / 180) * fltProfondeur / 3]);
     }
 
-    var objTelerecepteur = objgl.createBuffer();
-    objgl.bindBuffer(objgl.ARRAY_BUFFER, objTelerecepteur);
+    var objTeleRecepteur = objgl.createBuffer();
+    objgl.bindBuffer(objgl.ARRAY_BUFFER, objTeleRecepteur);
     objgl.bufferData(objgl.ARRAY_BUFFER, new Float32Array(tabVertex), objgl.STATIC_DRAW);
 
-    return objTelerecepteur;
+    return objTeleRecepteur;
 }
 
-function creerCouleursTelerecepteur(objgl, tabCouleurs) {
+function creerCouleursTeleRecepteur(objgl, tabCouleurs) {
     tabCouleurs = [];
     for (var i = 0; i < 1448; i++) {
         tabCouleurs = tabCouleurs.concat([0.0, 0.0, 0.0, 1.0]);
@@ -64,14 +64,14 @@ function creerCouleursTelerecepteur(objgl, tabCouleurs) {
     //     tabCouleurs = tabCouleurs.concat([0.0, 0.0, 0.0, 1.0]);
     // }
 
-    var objCouleursTelerecepteur = objgl.createBuffer();
-    objgl.bindBuffer(objgl.ARRAY_BUFFER, objCouleursTelerecepteur);
+    var objCouleursTeleRecepteur = objgl.createBuffer();
+    objgl.bindBuffer(objgl.ARRAY_BUFFER, objCouleursTeleRecepteur);
     objgl.bufferData(objgl.ARRAY_BUFFER, new Float32Array(tabCouleurs), objgl.STATIC_DRAW);
 
-    return objCouleursTelerecepteur;
+    return objCouleursTeleRecepteur;
 }
 
-function creerTexelsTelerecepteur(objgl, fltLargeur, fltHauteur, fltProfondeur, intNoTexture) {
+function creerTexelsTeleRecepteur(objgl, fltLargeur, fltHauteur, fltProfondeur, intNoTexture) {
     var centre1 = 0.2;
     var centre2 = 0.25;
     var tabTexels = [centre1, 0.5] // Le centre de la texture
@@ -94,17 +94,17 @@ function creerTexelsTelerecepteur(objgl, fltLargeur, fltHauteur, fltProfondeur, 
         tabTexels = tabTexels.concat([(i/360)*0.5 + 0.5, 1.0]);
     }
 
-    var objTexelsTelerecepteur = objgl.createBuffer();
-    objgl.bindBuffer(objgl.ARRAY_BUFFER, objTexelsTelerecepteur);
+    var objTexelsTeleRecepteur = objgl.createBuffer();
+    objgl.bindBuffer(objgl.ARRAY_BUFFER, objTexelsTeleRecepteur);
     objgl.bufferData(objgl.ARRAY_BUFFER, new Float32Array(tabTexels), objgl.DYNAMIC_DRAW);
 
-    objTexelsTelerecepteur.intNoTexture = intNoTexture; objTexelsTelerecepteur.pcCouleurTexel = 1.0;
+    objTexelsTeleRecepteur.intNoTexture = intNoTexture; objTexelsTeleRecepteur.pcCouleurTexel = 1.0;
 
 
-    return objTexelsTelerecepteur;
+    return objTexelsTeleRecepteur;
 }
 
-function creerMaillageTelerecepteur(objgl) {
+function creerMaillageTeleRecepteur(objgl) {
     var objMaillageCercle = objgl.createBuffer();
     var tabMaillageCercle = [];
 
