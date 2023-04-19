@@ -269,8 +269,10 @@ function collisionTransporteur() {
         }
     }
     console.log(tabObjTelerecepteur);
+
+    //fltXDelta = nouvelle position du joueur - poisition ancienne du joueur
     if (collisionAutres("TELETRANSPORTEUR")) {
-        // setCibleCameraX(0, joueur);
+        // setCibleCameraX(get + fltXDelta, joueur);
         // setCibleCameraZ(0, joueur);
         // setPositionCameraX(0, joueur);
         // setPositionCameraZ(0, joueur);
