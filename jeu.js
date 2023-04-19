@@ -11,7 +11,9 @@ var intOuvreursDeMurs = 0;
 var binVueAerienne = false;
 var intTempsVueAerienne = 0;
 var binTricherVueAerienne = false;
-var tObjNiveau = [];
+var tObjNiveau = []; 
+var objPositionTresor = null;
+
 
 
 function initNiveau() {
@@ -84,7 +86,7 @@ function initNiveau() {
     }
 
     // place le tresor
-    let objPositionTresor = tPositionsPossibles.splice(Math.floor(Math.random() * tPositionsPossibles.length), 1)[0];
+    objPositionTresor = tPositionsPossibles.splice(Math.floor(Math.random() * tPositionsPossibles.length), 1)[0];
     let obj3DTresor = creerObj3DCoffre(objgl, TEX_COFFRE); //objet 3d tresor
     setPositionsXYZ([objPositionTresor.x + 0.5, 0, objPositionTresor.z + 0.5], obj3DTresor.transformations);
     tObjNiveau[objPositionTresor.z][objPositionTresor.x] = obj3DTresor;
@@ -162,6 +164,11 @@ function deplacerJoueur(intDeltaMillis) {
         setPositionCameraX(getPositionCameraX(joueur) + fltXPrime, joueur);
         setPositionCameraZ(getPositionCameraZ(joueur) + fltZPrime, joueur);
         collisionJoueurMurs();
+        collisionAutres("TELERECEPTEUR");
+        collisionAutres("COFFRE");
+        collisionTransporteur();
+        //Test
+        // console.log(collisionAutres("COFFRE"));
     }
 }
 
@@ -240,6 +247,35 @@ function collisionJoueurMurs() {
     }
 }
 
+function collisionAutres(strType) {
+    let intPosXJoueur = Math.floor(getPositionCameraX(objCameraJoueur));
+    let intPosZJoueur = Math.floor(getPositionCameraZ(objCameraJoueur));
+
+    if (tObjNiveau[intPosZJoueur][intPosXJoueur] != null) {
+        return tObjNiveau[intPosZJoueur][intPosXJoueur].strType == strType
+    }
+    return false;
+}
+
+function collisionTransporteur() {
+    const joueur = objCameraJoueur;
+    const tabObjTelerecepteur = new Array();
+
+    for (let i = 0; i < tObjNiveau.length; i++) {
+        for (let j = 0; j < tObjNiveau[i].length; j++) {
+            if (tObjNiveau[i][j] != null && tObjNiveau[i][j].strType == "TELERECEPTEUR") {
+                tabObjTelerecepteur.push(tObjNiveau[i][j]);
+            }
+        }
+    }
+    console.log(tabObjTelerecepteur);
+    if (collisionAutres("TELETRANSPORTEUR")) {
+        // setCibleCameraX(0, joueur);
+        // setCibleCameraZ(0, joueur);
+        // setPositionCameraX(0, joueur);
+        // setPositionCameraZ(0, joueur);
+    }
+}
 
 function miseAJourHUD() {
     let objHUDOuvreursTxt = document.getElementById("HUDOuvreursTxt");

@@ -1,6 +1,7 @@
 
 function creerObj3DPlafond(objgl, intNoTexture) {
     var obj3DPlafond = new Object();
+    obj3DPlafond.strType = "PLAFOND";
     obj3DPlafond.fltLargeur = 31;   // X
     //obj3DPlafond.fltHauteur = 0;    // Y
     obj3DPlafond.fltProfondeur = 31;// Z

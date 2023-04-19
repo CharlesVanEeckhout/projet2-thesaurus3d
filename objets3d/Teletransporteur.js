@@ -1,8 +1,9 @@
 
 function creerObj3DTeleTransporteur(objgl, intNoTexture) {
     var obj3DTeleTransporteur = new Object();
+    obj3DTeleTransporteur.strType = 'TELETRANSPORTEUR';
     obj3DTeleTransporteur.fltLargeur = 1;
-    obj3DTeleTransporteur.fltHauteur = 1.5;
+    obj3DTeleTransporteur.fltHauteur = 1.99;
     obj3DTeleTransporteur.fltProfondeur = 1;
 
     obj3DTeleTransporteur.vertex = creerVertexTeleTransporteur(objgl, obj3DTeleTransporteur.fltLargeur, obj3DTeleTransporteur.fltHauteur, obj3DTeleTransporteur.fltProfondeur);

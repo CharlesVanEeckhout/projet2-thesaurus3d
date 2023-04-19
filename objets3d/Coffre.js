@@ -1,6 +1,7 @@
 
 function creerObj3DCoffre(objgl, intNoTexture) {
     var obj3DCoffre = new Object();
+    obj3DCoffre.strType = 'COFFRE';
     obj3DCoffre.fltLargeur = 0.6;    // X
     obj3DCoffre.fltHauteur = 0.6;    // Y
     obj3DCoffre.fltProfondeur = 0.6; // Z

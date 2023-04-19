@@ -1,6 +1,7 @@
 
 function creerObj3DFleche(objgl, intNoTexture) {
     var obj3DFleche = new Object();
+    obj3DFleche.strType = 'FLECHE';
     obj3DFleche.fltLargeur = 1;
     obj3DFleche.fltHauteur = 0.8;
     obj3DFleche.fltProfondeur = 0.4;

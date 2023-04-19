@@ -1,6 +1,7 @@
 
 function creerObj3DTapis(objgl, intNoTexture) {
     var obj3DTapis = new Object();
+    obj3DTapis.strType = "TAPIS";
     obj3DTapis.fltLargeur = 1;   // X
     //obj3DTapis.fltHauteur = 0; // Y
     obj3DTapis.fltProfondeur = 1;// Z

@@ -1,6 +1,7 @@
 
 function creerObj3DMur(objgl, intNoTexture, binBeton) {
     var obj3DMur = new Object();
+    obj3DMur.strType = "MUR";
     obj3DMur.fltLargeur = 1;
     obj3DMur.fltHauteur = 2;
     obj3DMur.fltProfondeur = 1;
