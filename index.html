@@ -24,6 +24,7 @@
     <script type="text/javascript" src="objets3d/TeleRecepteur.js"></script>
     <script type="text/javascript" src="objets3d/Coffre.js"></script>
     <script type="text/javascript" src="objets3d/Cloture.js"></script>
+    <script type="text/javascript" src="objets3d/Indicateur.js"></script>
     <script type="text/javascript" src="jeu.js"></script>
     <script type="text/javascript">
         
@@ -102,6 +103,7 @@
                 }
             }
             miseAJourHUD();
+            miseAJourIndicateur();
 
             effacerCanevas(objgl);
             dessiner(objgl, objProgShaders, objScene3D);
@@ -148,6 +150,10 @@
             objgl.uniformMatrix4fv(objProgShaders.matProjection, false, matProjection);
 
             for (var i = 0; i < objScene3D.tabObjets3D.length; i++) {
+                if(objScene3D.tabObjets3D[i].visible === false){
+                    continue; //skip dessiner objet
+                }
+
                 var vertex = objScene3D.tabObjets3D[i].vertex;
                 var couleurs = objScene3D.tabObjets3D[i].couleurs;
                 var texels = objScene3D.tabObjets3D[i].texels;
@@ -244,6 +250,9 @@
 
         function onKeyDown() {
             objClavier[event.key] = true;
+            if(objClavier['Control'] && objClavier['Shift'] && event.key === " " && binVueAerienne == true){
+                binTricherVueAerienne = !binTricherVueAerienne;
+            }
         }
 
         function onKeyUp() {

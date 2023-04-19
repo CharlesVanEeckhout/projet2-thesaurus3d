@@ -10,8 +10,10 @@ function creerObj3DTeleTransporteur(objgl, intNoTexture) {
     obj3DTeleTransporteur.couleurs = creerCouleursTeleTransporteur(objgl, [1, 1, 1, 1]);
     obj3DTeleTransporteur.texels = creerTexelsTeleTransporteur(objgl, obj3DTeleTransporteur.fltLargeur, obj3DTeleTransporteur.fltHauteur, obj3DTeleTransporteur.fltProfondeur, intNoTexture);
     obj3DTeleTransporteur.maillage = creerMaillageTeleTransporteur(objgl);
+    
     obj3DTeleTransporteur.transformations = creerTransformations();
 
+    obj3DTeleTransporteur.visible = true;
     obj3DTeleTransporteur.scrollTexture = 0;
     obj3DTeleTransporteur.animation = function(intDeltaMillis){
         obj3DTeleTransporteur.scrollTexture = (obj3DTeleTransporteur.scrollTexture + 0.0005*intDeltaMillis) % 1;

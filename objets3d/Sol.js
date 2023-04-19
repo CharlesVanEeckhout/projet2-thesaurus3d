@@ -12,6 +12,8 @@ function creerObj3DSol(objgl, intNoTexture) {
     obj3DSol.maillage = creerMaillageSol(objgl);
 
     obj3DSol.transformations = creerTransformations();
+
+    obj3DSol.visible = true;
     return obj3DSol;
 }
 

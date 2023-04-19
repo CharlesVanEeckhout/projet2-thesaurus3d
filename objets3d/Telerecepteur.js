@@ -10,8 +10,10 @@ function creerObj3DTeleRecepteur(objgl, intNoTexture) {
     obj3DTeleRecepteur.couleurs = creerCouleursTeleRecepteur(objgl, [1, 1, 1, 1]);
     obj3DTeleRecepteur.texels = creerTexelsTeleRecepteur(objgl, obj3DTeleRecepteur.fltLargeur, obj3DTeleRecepteur.fltHauteur, obj3DTeleRecepteur.fltProfondeur, intNoTexture);
     obj3DTeleRecepteur.maillage = creerMaillageTeleRecepteur(objgl);
+    
     obj3DTeleRecepteur.transformations = creerTransformations();
 
+    obj3DTeleRecepteur.visible = true;
     obj3DTeleRecepteur.scrollTexture = 0;
     obj3DTeleRecepteur.animation = function(intDeltaMillis){
         obj3DTeleRecepteur.scrollTexture = (obj3DTeleRecepteur.scrollTexture - 0.0005*intDeltaMillis) % 1;

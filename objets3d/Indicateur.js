@@ -1,30 +1,23 @@
 
-function creerObj3DFleche(objgl, intNoTexture) {
-    var obj3DFleche = new Object();
-    obj3DFleche.strType = 'FLECHE';
-    obj3DFleche.fltLargeur = 1;
-    obj3DFleche.fltHauteur = 0.8;
-    obj3DFleche.fltProfondeur = 0.4;
+function creerObj3DIndicateur(objgl, intNoTexture) {
+    var obj3DIndicateur = new Object();
+    obj3DIndicateur.strType = 'INDICATEUR'; //todo: remplacer par un triangle isocèle ou qqch
+    obj3DIndicateur.fltLargeur = 1;
+    obj3DIndicateur.fltHauteur = 4.8;
+    obj3DIndicateur.fltProfondeur = 0.4;
 
-    obj3DFleche.vertex = creerVertexFleche(objgl, obj3DFleche.fltLargeur, obj3DFleche.fltHauteur, obj3DFleche.fltProfondeur);
-    obj3DFleche.couleurs = creerCouleursFleche(objgl, [1, 1, 1, 1]);
-    obj3DFleche.texels = creerTexelsFleche(objgl, obj3DFleche.fltLargeur, obj3DFleche.fltProfondeur, intNoTexture);
-    obj3DFleche.maillage = creerMaillageFleche(objgl);
+    obj3DIndicateur.vertex = creerVertexIndicateur(objgl, obj3DIndicateur.fltLargeur, obj3DIndicateur.fltHauteur, obj3DIndicateur.fltProfondeur);
+    obj3DIndicateur.couleurs = creerCouleursIndicateur(objgl, [1, 1, 1, 1]);
+    obj3DIndicateur.texels = creerTexelsIndicateur(objgl, obj3DIndicateur.fltLargeur, obj3DIndicateur.fltProfondeur, intNoTexture);
+    obj3DIndicateur.maillage = creerMaillageIndicateur(objgl);
 
-    obj3DFleche.transformations = creerTransformations();
+    obj3DIndicateur.transformations = creerTransformations();
 
-    obj3DFleche.visible = true;
-    return obj3DFleche;
+    obj3DIndicateur.visible = true;
+    return obj3DIndicateur;
 }
 
-function creerVertexFleche(objgl, fltLargeur, fltHauteur, fltProfondeur) {
-    /* SCHEMA DE LA FLECHE
-        .
-    . _ . \
-    |       .
-    . - . /
-        .
-    */
+function creerVertexIndicateur(objgl, fltLargeur, fltHauteur, fltProfondeur) {
     var tabVertex = [
         // pointe du triangle de la flèche
          fltLargeur / 2,  0.0,            -fltProfondeur / 2, 
@@ -49,26 +42,26 @@ function creerVertexFleche(objgl, fltLargeur, fltHauteur, fltProfondeur) {
         -fltLargeur / 2, -fltHauteur / 4,  fltProfondeur / 2,
     ];
 
-    var objFleche = objgl.createBuffer();
-    objgl.bindBuffer(objgl.ARRAY_BUFFER, objFleche);
+    var objIndicateur = objgl.createBuffer();
+    objgl.bindBuffer(objgl.ARRAY_BUFFER, objIndicateur);
     objgl.bufferData(objgl.ARRAY_BUFFER, new Float32Array(tabVertex), objgl.STATIC_DRAW);
 
-    return objFleche;
+    return objIndicateur;
 }
 
-function creerCouleursFleche(objgl, tabCouleur) {
+function creerCouleursIndicateur(objgl, tabCouleur) {
     tabCouleurs = [];
     for (var i = 0; i < 4; i++)
         tabCouleurs = tabCouleurs.concat(tabCouleur);
 
-    var objCouleursFleche = objgl.createBuffer();
-    objgl.bindBuffer(objgl.ARRAY_BUFFER, objCouleursFleche);
+    var objCouleursIndicateur = objgl.createBuffer();
+    objgl.bindBuffer(objgl.ARRAY_BUFFER, objCouleursIndicateur);
     objgl.bufferData(objgl.ARRAY_BUFFER, new Float32Array(tabCouleurs), objgl.STATIC_DRAW);
 
-    return objCouleursFleche;
+    return objCouleursIndicateur;
 }
 
-function creerTexelsFleche(objgl, fltLargeur, fltProfondeur, intNoTexture) {
+function creerTexelsIndicateur(objgl, fltLargeur, fltProfondeur, intNoTexture) {
     var tabTexels = [
         // pointe du triangle de la flèche
         1.00, 0.50,
@@ -90,16 +83,16 @@ function creerTexelsFleche(objgl, fltLargeur, fltProfondeur, intNoTexture) {
         tabTexels.splice(i+2, 0, tabTexels[i], tabTexels[i+1]);
     }
 
-    var objTexelsFleche = objgl.createBuffer();
-    objgl.bindBuffer(objgl.ARRAY_BUFFER, objTexelsFleche);
+    var objTexelsIndicateur = objgl.createBuffer();
+    objgl.bindBuffer(objgl.ARRAY_BUFFER, objTexelsIndicateur);
     objgl.bufferData(objgl.ARRAY_BUFFER, new Float32Array(tabTexels), objgl.STATIC_DRAW);
 
-    objTexelsFleche.intNoTexture = intNoTexture; objTexelsFleche.pcCouleurTexel = 1.0;
+    objTexelsIndicateur.intNoTexture = intNoTexture; objTexelsIndicateur.pcCouleurTexel = 1.0;
 
-    return objTexelsFleche;
+    return objTexelsIndicateur;
 }
 
-function creerMaillageFleche(objgl) {
+function creerMaillageIndicateur(objgl) {
     var tabMaillage = [
         // Triangle de la flèche proche
         0, 2, 6,
@@ -134,16 +127,16 @@ function creerMaillageFleche(objgl) {
         13, 8, 9 
     ];
 
-    var objMaillageFleche = objgl.createBuffer();
-    objgl.bindBuffer(objgl.ELEMENT_ARRAY_BUFFER, objMaillageFleche);
+    var objMaillageIndicateur = objgl.createBuffer();
+    objgl.bindBuffer(objgl.ELEMENT_ARRAY_BUFFER, objMaillageIndicateur);
     objgl.bufferData(objgl.ELEMENT_ARRAY_BUFFER, new Uint16Array(tabMaillage), objgl.STATIC_DRAW);
 
     // Le nombre de triangles
-    objMaillageFleche.intNbTriangles = 24;
+    objMaillageIndicateur.intNbTriangles = 24;
     // Le nombre de droites
-    objMaillageFleche.intNbDroites = 0;
+    objMaillageIndicateur.intNbDroites = 0;
 
-    return objMaillageFleche;
+    return objMaillageIndicateur;
 }
 
 

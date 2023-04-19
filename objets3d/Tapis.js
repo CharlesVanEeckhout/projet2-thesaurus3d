@@ -12,6 +12,8 @@ function creerObj3DTapis(objgl, intNoTexture) {
     obj3DTapis.maillage = creerMaillageTapis(objgl);
 
     obj3DTapis.transformations = creerTransformations();
+
+    obj3DTapis.visible = true;
     return obj3DTapis;
 }
 

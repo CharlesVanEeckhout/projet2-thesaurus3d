@@ -12,6 +12,8 @@ function creerObj3DCoffre(objgl, intNoTexture) {
     obj3DCoffre.maillage = creerMaillageCoffre(objgl);
 
     obj3DCoffre.transformations = creerTransformations();
+
+    obj3DCoffre.visible = true;
     return obj3DCoffre;
 }
 

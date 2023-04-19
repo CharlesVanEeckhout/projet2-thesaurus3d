@@ -9,11 +9,11 @@ function creerObj3DMur(objgl, intNoTexture, binBeton) {
     obj3DMur.vertex = creerVertexMur(objgl, obj3DMur.fltLargeur, obj3DMur.fltHauteur, obj3DMur.fltProfondeur);
     obj3DMur.couleurs = creerCouleursMur(objgl, [1, 1, 1, 1]);
     obj3DMur.texels = creerTexelsMur(objgl, obj3DMur.fltLargeur, obj3DMur.fltHauteur, obj3DMur.fltProfondeur, intNoTexture);
-
     obj3DMur.maillage = creerMaillageMur(objgl);
     
     obj3DMur.transformations = creerTransformations();
 
+    obj3DMur.visible = true;
     obj3DMur.collisionMur = true;
     obj3DMur.binBeton = binBeton || false;
     return obj3DMur;

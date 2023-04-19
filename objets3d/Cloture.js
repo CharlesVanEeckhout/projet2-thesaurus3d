@@ -1,6 +1,7 @@
 
 function creerObj3DCloture(objgl, intNoTexture) {
     var obj3DCloture = new Object();
+    obj3DCloture.strType = 'CLOTURE';
     obj3DCloture.fltLargeur = 1;
     obj3DCloture.fltHauteur = 2;
     obj3DCloture.fltProfondeur = 1;
@@ -12,6 +13,7 @@ function creerObj3DCloture(objgl, intNoTexture) {
 
     obj3DCloture.transformations = creerTransformations();
 
+    obj3DCloture.visible = true;
     obj3DCloture.collisionMur = false;
     obj3DCloture.binBeton = true;
     obj3DCloture.fermeTemps = 0;

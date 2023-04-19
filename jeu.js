@@ -11,7 +11,7 @@ var intOuvreursDeMurs = 0;
 var binVueAerienne = false;
 var intTempsVueAerienne = 0;
 var binTricherVueAerienne = false;
-var tObjNiveau = []; 
+var tObjNiveau = null;
 var objPositionTresor = null;
 
 
@@ -32,6 +32,7 @@ function initNiveau() {
 
     // Vider les objets
     objScene3D.tabObjets3D = new Array();
+    tObjNiveau = new Array();
 
     // Créer le sol
     let obj3DSol = creerObj3DSol(objgl, TEX_SOL);
@@ -41,6 +42,10 @@ function initNiveau() {
     let obj3DPlafond = creerObj3DPlafond(objgl, TEX_SOL);
     setPositionY(2, obj3DPlafond.transformations);
     objScene3D.tabObjets3D.push(obj3DPlafond);
+
+    // Créer l'indicateur
+    let obj3DIndicateur = creerObj3DIndicateur(objgl, TEX_FLECHE);
+    objScene3D.tabObjets3D.push(obj3DIndicateur);
 
     // trouve positions possibles pour objets aléatoires du niveau
     let tPositionsPossibles = [];
@@ -123,6 +128,23 @@ function initNiveau() {
 }
 
 
+function miseAJourIndicateur() {
+    let objIndicateur = null;
+    for (const obj of objScene3D.tabObjets3D) {
+        if (obj.strType === "INDICATEUR") {
+            objIndicateur = obj;
+            break;
+        }
+    }
+    if (objIndicateur === null) {
+        return; /* triste :( */
+    }
+    let fltAngleJoueur = Math.atan2(getCibleCameraZ(objCameraJoueur) - getPositionCameraZ(objCameraJoueur), getCibleCameraX(objCameraJoueur) - getPositionCameraX(objCameraJoueur));
+    setAngleY(fltAngleJoueur * Math.PI / 180, objIndicateur.transformations);
+    setPositionsXYZ(getPositionsCameraXYZ(objCameraJoueur), objIndicateur.transformations);
+}
+
+
 function changeDeVue() {
     if (objClavier['PageUp'] && binVueAerienne == false) {
         binVueAerienne = true;
@@ -130,7 +152,28 @@ function changeDeVue() {
     }
     if (objClavier['PageDown'] && binVueAerienne == true) {
         binVueAerienne = false;
+        binTricherVueAerienne = false;
         objScene3D.camera = objCameraJoueur;
+    }
+
+    for (const obj of objScene3D.tabObjets3D) {
+        switch (obj.strType) {
+            case "CLOTURE":
+            case "COFFRE":
+            case "FLECHE":
+            case "TELERECEPTEUR":
+            case "TELETRANSPORTEUR":
+                obj.visible = !binVueAerienne || binTricherVueAerienne;
+                break;
+            case "PLAFOND":
+                obj.visible = !binVueAerienne;
+                break;
+            case "INDICATEUR":
+                obj.visible = binVueAerienne;
+                break;
+            default:
+                obj.visible = true;
+        }
     }
 }
 
@@ -144,11 +187,11 @@ function deplacerJoueur(intDeltaMillis) {
         let intDirection = (objClavier['ArrowLeft']) ? -1 : 1;
         let fltAngle = intDirection * 0.0015 * intDeltaMillis; // Tourner 15/10000 radians par milliseconde
 
-        let fltXPrime = fltX * Math.cos(fltAngle) - fltZ * Math.sin(fltAngle);
-        let fltZPrime = fltX * Math.sin(fltAngle) + fltZ * Math.cos(fltAngle);
+        let fltXDelta = fltX * Math.cos(fltAngle) - fltZ * Math.sin(fltAngle);
+        let fltZDelta = fltX * Math.sin(fltAngle) + fltZ * Math.cos(fltAngle);
 
-        setCibleCameraX(getPositionCameraX(joueur) + fltXPrime, joueur);
-        setCibleCameraZ(getPositionCameraZ(joueur) + fltZPrime, joueur);
+        setCibleCameraX(getPositionCameraX(joueur) + fltXDelta, joueur);
+        setCibleCameraZ(getPositionCameraZ(joueur) + fltZDelta, joueur);
     }
     if (objClavier['ArrowUp'] || objClavier['ArrowDown']) {
         let fltX = getCibleCameraX(joueur) - getPositionCameraX(joueur);
@@ -156,13 +199,13 @@ function deplacerJoueur(intDeltaMillis) {
         let fltRayon = Math.sqrt(fltX * fltX + fltZ * fltZ);
         let intDirection = (objClavier['ArrowUp']) ? 1 : -1;
 
-        let fltXPrime = intDirection * 0.003 * intDeltaMillis * Math.cos(Math.acos(fltX / fltRayon)); // Avancer de 3/1000 unites par milliseconde
-        let fltZPrime = intDirection * 0.003 * intDeltaMillis * Math.sin(Math.asin(fltZ / fltRayon));
+        let fltXDelta = intDirection * 0.003 * intDeltaMillis * Math.cos(Math.acos(fltX / fltRayon)); // Avancer de 3/1000 unites par milliseconde
+        let fltZDelta = intDirection * 0.003 * intDeltaMillis * Math.sin(Math.asin(fltZ / fltRayon));
 
-        setCibleCameraX(getCibleCameraX(joueur) + fltXPrime, joueur);
-        setCibleCameraZ(getCibleCameraZ(joueur) + fltZPrime, joueur);
-        setPositionCameraX(getPositionCameraX(joueur) + fltXPrime, joueur);
-        setPositionCameraZ(getPositionCameraZ(joueur) + fltZPrime, joueur);
+        setCibleCameraX(getCibleCameraX(joueur) + fltXDelta, joueur);
+        setCibleCameraZ(getCibleCameraZ(joueur) + fltZDelta, joueur);
+        setPositionCameraX(getPositionCameraX(joueur) + fltXDelta, joueur);
+        setPositionCameraZ(getPositionCameraZ(joueur) + fltZDelta, joueur);
         collisionJoueurMurs();
         collisionAutres("TELERECEPTEUR");
         collisionAutres("COFFRE");
@@ -247,8 +290,7 @@ function collisionJoueurMurs() {
     let fltJoueurZ = getPositionCameraZ(joueur);
     let fltJoueurRayon = 0.2;
 
-    const tabObjets3D = objScene3D.tabObjets3D;
-    for (const obj of tabObjets3D) {
+    for (const obj of objScene3D.tabObjets3D) {
         if (!obj.collisionMur) {
             continue; //n'est pas un mur
         }
@@ -270,12 +312,12 @@ function collisionJoueurMurs() {
                 fltObjX - obj.fltLargeur / 2, fltObjX + obj.fltLargeur / 2, fltObjZ + (obj.fltProfondeur / 2 * -Math.sign(fltDistZ)));
         }
         if (objColl !== false) {
-            let fltXPrime = objColl.x - fltJoueurX;
-            let fltZPrime = objColl.z - fltJoueurZ;
-            setCibleCameraX(getCibleCameraX(joueur) + fltXPrime, joueur);
-            setCibleCameraZ(getCibleCameraZ(joueur) + fltZPrime, joueur);
-            setPositionCameraX(getPositionCameraX(joueur) + fltXPrime, joueur);
-            setPositionCameraZ(getPositionCameraZ(joueur) + fltZPrime, joueur);
+            let fltXDelta = objColl.x - fltJoueurX;
+            let fltZDelta = objColl.z - fltJoueurZ;
+            setCibleCameraX(getCibleCameraX(joueur) + fltXDelta, joueur);
+            setCibleCameraZ(getCibleCameraZ(joueur) + fltZDelta, joueur);
+            setPositionCameraX(getPositionCameraX(joueur) + fltXDelta, joueur);
+            setPositionCameraZ(getPositionCameraZ(joueur) + fltZDelta, joueur);
         }
     }
 }

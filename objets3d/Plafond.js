@@ -12,6 +12,8 @@ function creerObj3DPlafond(objgl, intNoTexture) {
     obj3DPlafond.maillage = creerMaillagePlafond(objgl);
 
     obj3DPlafond.transformations = creerTransformations();
+
+    obj3DPlafond.visible = true;
     return obj3DPlafond;
 }
 
