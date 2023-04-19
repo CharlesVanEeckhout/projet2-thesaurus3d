@@ -172,6 +172,39 @@ function deplacerJoueur(intDeltaMillis) {
     }
 }
 
+function ouvrirMur(){
+    let boo = false;
+    if(objClavier[" "]){
+        boo = true;
+        const joueur = objCameraJoueur;
+        let fltJoueurX = getPositionCameraX(joueur);
+        let fltJoueurZ = getPositionCameraZ(joueur);
+        let fltX = getCibleCameraX(joueur) - getPositionCameraX(joueur);
+        let fltZ = getCibleCameraZ(joueur) - getPositionCameraZ(joueur);
+        //let fltJoueurRayon = 0.2;
+    
+        const tabObjets3D = objScene3D.tabObjets3D;
+        let i = 0;
+        for (const obj of tabObjets3D) {
+            if (!obj.collisionMur) {
+                continue; //n'est pas un mur
+            }
+            let fltObjX = getPositionX(obj.transformations);
+            let fltObjZ = getPositionZ(obj.transformations);
+            let fltDistX = fltObjX - fltJoueurX;
+            let fltDistZ = fltObjZ - fltJoueurZ;
+            if (Math.abs(fltDistX) <= 2 && Math.abs(fltDistZ) <= 2 && !obj.binBeton && boo && Math.abs(fltX) <= 1 || Math.abs(fltZ) <= 1) {
+                console.log(Math.abs(fltX));
+                console.log(Math.abs(fltZ));
+                console.log('JOUVRE LE MUR');
+                objScene3D.tabObjets3D[i] = '';
+                boo = false;
+            }
+            i++;
+        }    
+    }
+}
+
 //inspiré par https://www.jeffreythompson.org/collision-detection/line-circle.php
 function collisionCercleLigneX(cX, cZ, cRayon, lX, lZ1, lZ2) {
     if (Math.abs(cX - lX) > cRayon) {
