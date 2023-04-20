@@ -376,13 +376,10 @@ function collisionTransporteur() {
     
     var fltXDelta =  Math.floor(item.transformations[0] - intPosXJoueur);
     var fltZDelta =  Math.floor(item.transformations[2] - intPosZJoueur);
-<<<<<<< Updated upstream
     //console.log(" Position du joueur    : " +  intPosXJoueur + ", " + intPosZJoueur);
     //console.log(" Position du tele    : " +  fltXDelta + ", " + fltZDelta);
     //fltXDelta = nouvelle position du joueur - poisition ancienne du joueur
-=======
 
->>>>>>> Stashed changes
     if (collisionAutres("TELETRANSPORTEUR")) {
         setCibleCameraX(getCibleCameraX(joueur) + fltXDelta, joueur);
         setCibleCameraZ(getCibleCameraZ(joueur) + fltZDelta, joueur);
