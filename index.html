@@ -91,20 +91,93 @@
             let intDateActuelle = new Date();
             let intDeltaMillis = intDateActuelle - intDatePassee;
             intDatePassee = intDateActuelle;
+            intTempsDsPhaseDeJeu += intDeltaMillis;
 
-            intTemps -= intDeltaMillis;
-            intTemps = Math.max(intTemps, 0);
-            changeDeVue();
-            if(binVueAerienne == false){
-                deplacerJoueur(intDeltaMillis);
-            }
+            switch(strPhaseDuJeu){
+                case "recherche":
+                    intTemps -= intDeltaMillis;
+                    intTemps = Math.max(intTemps, 0);
+                    changeDeVue();
+                    if(binVueAerienne == false){
+                        deplacerJoueur(intDeltaMillis);
+                    } else {
+                        intTempsVueAerienne += intDeltaMillis;
+                        if(intTempsVueAerienne > 1000){
+                            intScore -= Math.floor(intTempsVueAerienne/1000)*10;
+                            intTempsVueAerienne -= Math.floor(intTempsVueAerienne/1000)*1000;
+                        }
+                    }
 
-            for(var obj of objScene3D.tabObjets3D){
-                if(obj.animation !== undefined){
-                    //console.log("hey");
-                    obj.animation(intDeltaMillis);
-                }
+                    for(var obj of objScene3D.tabObjets3D){
+                        if(obj.animation !== undefined){
+                            obj.animation(intDeltaMillis);
+                        }
+                    }
+
+                    if(intTemps === 0){
+                        strPhaseDuJeu = "perds_normal";
+                        intTempsDsPhaseDeJeu = 0;
+                    }
+
+                    if(collisionAutres("COFFRE")){
+                        strPhaseDuJeu = "gagne_pre-decompte";
+                        intTempsDsPhaseDeJeu = 0;
+                    }
+                    break;
+                case "gagne_pre-decompte":
+                    if(intTempsDsPhaseDeJeu >= 1000){
+                        strPhaseDuJeu = "gagne_decompte";
+                        intTempsDsPhaseDeJeu = 0;
+                    }
+                    break;
+                case "gagne_decompte":
+                    if(intTempsDsPhaseDeJeu >= 100){
+                        if(intTemps > 0){
+                            intTemps -= 1000;
+                            intTemps = Math.ceil(intTemps/1000)*1000;
+                            intScore += 10;
+                        }
+                        else{
+                            strPhaseDuJeu = "gagne_post-decompte";
+                        }
+                        intTempsDsPhaseDeJeu = 0;
+                    }
+                    break;
+                case "gagne_post-decompte":
+                    if(intTempsDsPhaseDeJeu >= 1000){
+                        intNiveau++;
+                        if(intNiveau > 10){
+                            //gagne le jeu au complet
+                            strPhaseDuJeu = "gagne_ultime";
+                            intTempsDsPhaseDeJeu = 0;
+                        }
+                        else{
+                            strPhaseDuJeu = "recherche";
+                            intTempsDsPhaseDeJeu = 0;
+                            initNiveau();
+                        }
+                    }
+                    break;
+                case "gagne_ultime":
+                    break;
+                case "perds_normal":
+                    if(intTempsDsPhaseDeJeu >= 1000){
+                        if(intScore < 200){
+                            intScore = 0;
+                            strPhaseDuJeu = "perds_ultime";
+                            intTempsDsPhaseDeJeu = 0;
+                        }else{
+                            intScore -= 200;
+                            strPhaseDuJeu = "recherche";
+                            intTempsDsPhaseDeJeu = 0;
+                            initNiveau();
+                        }
+                    }
+                    break;
+                case "perds_ultime":
+                    break;
             }
+            
             miseAJourHUD();
             miseAJourIndicateur();
 
@@ -118,8 +191,6 @@
 
             // Mettre les textures dans la scène
             objScene3D.textures = creerTextures(objgl, tabImages);
-
-            
 
             // Mettre les objets 3D sur la scène
             objScene3D.tabObjets3D = tabObjets3D;

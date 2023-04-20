@@ -13,7 +13,8 @@ var intTempsVueAerienne = 0;
 var binTricherVueAerienne = false;
 var tObjNiveau = null;
 var objPositionTresor = null;
-
+var strPhaseDuJeu = "recherche";
+var intTempsDsPhaseDeJeu = 0;
 
 
 function initNiveau() {
@@ -151,7 +152,7 @@ function changeDeVue() {
         binVueAerienne = true;
         objScene3D.camera = objCameraVueAerienne;
     }
-    if (objClavier['PageDown'] && binVueAerienne == true) {
+    if ((objClavier['PageDown'] && binVueAerienne == true) || intScore < 10) {
         binVueAerienne = false;
         binTricherVueAerienne = false;
         objScene3D.camera = objCameraJoueur;
@@ -252,27 +253,7 @@ function ouvrirMur(){
         objScene3D.tabObjets3D = objScene3D.tabObjets3D.filter(obj => obj !== objBlocADetruire);
         tObjNiveau = tObjNiveau.map(i => i.map(obj => (obj === objBlocADetruire) ? null : obj));
         intOuvreursDeMurs--;
-        intScore -= 50;
-        
-        //const tabObjets3D = objScene3D.tabObjets3D;
-        /*let i = 0;
-        for (const obj of tabObjets3D) {
-            if (!obj.collisionMur) {
-                continue; //n'est pas un mur
-            }
-            let fltObjX = getPositionX(obj.transformations);
-            let fltObjZ = getPositionZ(obj.transformations);
-            let fltDistX = fltObjX - fltJoueurX;
-            let fltDistZ = fltObjZ - fltJoueurZ;
-            if (Math.abs(fltDistX) == 0 && Math.abs(fltDistZ) <= 1 && !obj.binBeton) {
-
-                console.log('JOUVRE LE MUR');
-                console.log(obj);
-                objScene3D.tabObjets3D = objScene3D.tabObjets3D.filter(obj1 => obj1 != obj);
-
-            }
-            i++;
-        } */   
+        intScore -= 50;  
     }
 
 //inspiré par https://www.jeffreythompson.org/collision-detection/line-circle.php
@@ -354,7 +335,7 @@ function collisionAutres(strType) {
     let intPosZJoueur = Math.floor(getPositionCameraZ(objCameraJoueur));
 
     if (tObjNiveau[intPosZJoueur][intPosXJoueur] != null) {
-        return tObjNiveau[intPosZJoueur][intPosXJoueur].strType == strType
+        return tObjNiveau[intPosZJoueur][intPosXJoueur].strType == strType;
     }
     return false;
 }
