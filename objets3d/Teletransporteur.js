@@ -62,11 +62,7 @@ function creerCouleursTeleTransporteur(objgl, tabCouleurs) {
     for (var i = 0; i < 1448; i++) {
         tabCouleurs = tabCouleurs.concat([0.0, 0.0, 0.0, 1.0]);
     }
-
-    // for (var i = 0; i < 724; i++) {
-    //     tabCouleurs = tabCouleurs.concat([0.0, 0.0, 0.0, 1.0]);
-    // }
-
+    
     var objCouleursTeleTransporteur = objgl.createBuffer();
     objgl.bindBuffer(objgl.ARRAY_BUFFER, objCouleursTeleTransporteur);
     objgl.bufferData(objgl.ARRAY_BUFFER, new Float32Array(tabCouleurs), objgl.STATIC_DRAW);
