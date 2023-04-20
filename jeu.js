@@ -44,7 +44,7 @@ function initNiveau() {
     objScene3D.tabObjets3D.push(obj3DPlafond);
 
     // Créer l'indicateur
-    let obj3DIndicateur = creerObj3DIndicateur(objgl, TEX_FLECHE);
+    let obj3DIndicateur = creerObj3DIndicateur(objgl, TEX_INDICATEUR);
     objScene3D.tabObjets3D.push(obj3DIndicateur);
 
     // trouve positions possibles pour objets aléatoires du niveau
@@ -139,8 +139,9 @@ function miseAJourIndicateur() {
     if (objIndicateur === null) {
         return; /* triste :( */
     }
-    let fltAngleJoueur = Math.atan2(getCibleCameraZ(objCameraJoueur) - getPositionCameraZ(objCameraJoueur), getCibleCameraX(objCameraJoueur) - getPositionCameraX(objCameraJoueur));
-    setAngleY(fltAngleJoueur * Math.PI / 180, objIndicateur.transformations);
+    let fltAngleJoueur = Math.atan2(-getCibleCameraZ(objCameraJoueur) + getPositionCameraZ(objCameraJoueur), getCibleCameraX(objCameraJoueur) - getPositionCameraX(objCameraJoueur));
+    console.log(fltAngleJoueur);
+    setAngleY(fltAngleJoueur / Math.PI * 180, objIndicateur.transformations);
     setPositionsXYZ(getPositionsCameraXYZ(objCameraJoueur), objIndicateur.transformations);
 }
 

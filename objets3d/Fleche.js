@@ -8,7 +8,7 @@ function creerObj3DFleche(objgl, intNoTexture) {
 
     obj3DFleche.vertex = creerVertexFleche(objgl, obj3DFleche.fltLargeur, obj3DFleche.fltHauteur, obj3DFleche.fltProfondeur);
     obj3DFleche.couleurs = creerCouleursFleche(objgl, [1, 1, 1, 1]);
-    obj3DFleche.texels = creerTexelsFleche(objgl, obj3DFleche.fltLargeur, obj3DFleche.fltProfondeur, intNoTexture);
+    obj3DFleche.texels = creerTexelsFleche(objgl, intNoTexture);
     obj3DFleche.maillage = creerMaillageFleche(objgl);
 
     obj3DFleche.transformations = creerTransformations();
@@ -68,7 +68,7 @@ function creerCouleursFleche(objgl, tabCouleur) {
     return objCouleursFleche;
 }
 
-function creerTexelsFleche(objgl, fltLargeur, fltProfondeur, intNoTexture) {
+function creerTexelsFleche(objgl, intNoTexture) {
     var tabTexels = [
         // pointe du triangle de la flèche
         1.00, 0.50,
