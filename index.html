@@ -93,7 +93,6 @@
             intTemps -= intDeltaMillis;
             intTemps = Math.max(intTemps, 0);
             changeDeVue();
-            ouvrirMur();
             if(binVueAerienne == false){
                 deplacerJoueur(intDeltaMillis);
             }
@@ -254,6 +253,9 @@
             objClavier[event.key] = true;
             if(objClavier['Control'] && objClavier['Shift'] && event.key === " " && binVueAerienne == true){
                 binTricherVueAerienne = !binTricherVueAerienne;
+            }
+            if(event.key === " " && !binVueAerienne){
+                ouvrirMur();
             }
         }
 

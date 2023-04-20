@@ -140,7 +140,7 @@ function miseAJourIndicateur() {
         return; /* triste :( */
     }
     let fltAngleJoueur = Math.atan2(-getCibleCameraZ(objCameraJoueur) + getPositionCameraZ(objCameraJoueur), getCibleCameraX(objCameraJoueur) - getPositionCameraX(objCameraJoueur));
-    console.log(fltAngleJoueur);
+    //console.log(fltAngleJoueur);
     setAngleY(fltAngleJoueur / Math.PI * 180, objIndicateur.transformations);
     setPositionsXYZ(getPositionsCameraXYZ(objCameraJoueur), objIndicateur.transformations);
 }
@@ -217,18 +217,49 @@ function deplacerJoueur(intDeltaMillis) {
 }
 
 function ouvrirMur(){
-    let boo = false;
-    if(objClavier[" "]){
-        boo = true;
         const joueur = objCameraJoueur;
         let fltJoueurX = getPositionCameraX(joueur);
         let fltJoueurZ = getPositionCameraZ(joueur);
-        let fltX = getCibleCameraX(joueur) - getPositionCameraX(joueur);
-        let fltZ = getCibleCameraZ(joueur) - getPositionCameraZ(joueur);
+        let fltAngleJoueur = Math.atan2(-getCibleCameraZ(objCameraJoueur) + getPositionCameraZ(objCameraJoueur), getCibleCameraX(objCameraJoueur) - getPositionCameraX(objCameraJoueur));
         //let fltJoueurRayon = 0.2;
-    
-        const tabObjets3D = objScene3D.tabObjets3D;
-        let i = 0;
+        const tabBriques = [
+            tObjNiveau[Math.floor(fltJoueurZ)][Math.floor(fltJoueurX)-1],
+            tObjNiveau[Math.floor(fltJoueurZ)+1][Math.floor(fltJoueurX)],
+            tObjNiveau[Math.floor(fltJoueurZ)][Math.floor(fltJoueurX)+1],
+            tObjNiveau[Math.floor(fltJoueurZ)-1][Math.floor(fltJoueurX)],
+        ];
+
+        const objBlocADetruire = tabBriques[Math.floor((fltAngleJoueur/Math.PI*2+2.5)%4)];
+        //console.log(fltJoueurX, fltJoueurZ);
+        //console.log(getPositionsXYZ(objBlocADetruire.transformations));
+        if(objBlocADetruire === null){
+            //console.log('wohhoo1');
+            return;
+        }
+        if(objBlocADetruire.strType !== 'MUR'){
+            //console.log('wohhoo2');
+            return;
+        }
+        if(objBlocADetruire.binBeton !== false){
+            //console.log('wohhoo3');
+            return;
+        }
+        if(intOuvreursDeMurs <= 0){
+            //console.log('wohhoo3');
+            return;
+        }
+        if(intScore < 50){
+            //console.log('wohhoo3');
+            return;
+        }
+        //console.log('wohhoo');
+        objScene3D.tabObjets3D = objScene3D.tabObjets3D.filter(obj => obj !== objBlocADetruire);
+        tObjNiveau = tObjNiveau.map(i => i.map(obj => (obj === objBlocADetruire) ? null : obj));
+        intOuvreursDeMurs--;
+        intScore -= 50;
+        
+        //const tabObjets3D = objScene3D.tabObjets3D;
+        /*let i = 0;
         for (const obj of tabObjets3D) {
             if (!obj.collisionMur) {
                 continue; //n'est pas un mur
@@ -237,17 +268,16 @@ function ouvrirMur(){
             let fltObjZ = getPositionZ(obj.transformations);
             let fltDistX = fltObjX - fltJoueurX;
             let fltDistZ = fltObjZ - fltJoueurZ;
-            if (Math.abs(fltDistX) <= 2 && Math.abs(fltDistZ) <= 2 && !obj.binBeton && boo && Math.abs(fltX) <= 1 || Math.abs(fltZ) <= 1) {
-                console.log(Math.abs(fltX));
-                console.log(Math.abs(fltZ));
+            if (Math.abs(fltDistX) == 0 && Math.abs(fltDistZ) <= 1 && !obj.binBeton) {
+
                 console.log('JOUVRE LE MUR');
-                objScene3D.tabObjets3D[i] = '';
-                boo = false;
+                console.log(obj);
+                objScene3D.tabObjets3D = objScene3D.tabObjets3D.filter(obj1 => obj1 != obj);
+
             }
             i++;
-        }    
+        } */   
     }
-}
 
 //inspiré par https://www.jeffreythompson.org/collision-detection/line-circle.php
 function collisionCercleLigneX(cX, cZ, cRayon, lX, lZ1, lZ2) {
@@ -293,7 +323,7 @@ function collisionJoueurMurs() {
 
     for (const obj of objScene3D.tabObjets3D) {
         if (!obj.collisionMur) {
-            continue; //n'est pas un mur
+            continue; //n'est pas un objet solide
         }
         let fltObjX = getPositionX(obj.transformations);
         let fltObjZ = getPositionZ(obj.transformations);
@@ -350,8 +380,8 @@ function collisionTransporteur() {
     
     var fltXDelta =  Math.floor(item.transformations[0] - intPosXJoueur);
     var fltZDelta =  Math.floor(item.transformations[2] - intPosZJoueur);
-    console.log(" Position du joueur    : " +  intPosXJoueur + ", " + intPosZJoueur);
-    console.log(" Position du tele    : " +  fltXDelta + ", " + fltZDelta);
+    //console.log(" Position du joueur    : " +  intPosXJoueur + ", " + intPosZJoueur);
+    //console.log(" Position du tele    : " +  fltXDelta + ", " + fltZDelta);
     //fltXDelta = nouvelle position du joueur - poisition ancienne du joueur
     if (collisionAutres("TELETRANSPORTEUR")) {
         setCibleCameraX(getCibleCameraX(joueur) + fltXDelta, joueur);
