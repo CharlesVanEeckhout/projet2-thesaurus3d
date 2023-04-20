@@ -334,6 +334,8 @@ function collisionAutres(strType) {
 
 function collisionTransporteur() {
     const joueur = objCameraJoueur;
+    let intPosXJoueur = Math.floor(getPositionCameraX(joueur));
+    let intPosZJoueur = Math.floor(getPositionCameraZ(joueur));
     const tabObjTelerecepteur = new Array();
 
     for (let i = 0; i < tObjNiveau.length; i++) {
@@ -343,14 +345,18 @@ function collisionTransporteur() {
             }
         }
     }
-    console.log(tabObjTelerecepteur);
-
+    var item = tabObjTelerecepteur[Math.floor(Math.random()*tabObjTelerecepteur.length)];
+    
+    var fltXDelta =  Math.floor(item.transformations[0] - intPosXJoueur);
+    var fltZDelta =  Math.floor(item.transformations[2] - intPosZJoueur);
+    console.log(" Position du joueur    : " +  intPosXJoueur + ", " + intPosZJoueur);
+    console.log(" Position du tele    : " +  fltXDelta + ", " + fltZDelta);
     //fltXDelta = nouvelle position du joueur - poisition ancienne du joueur
     if (collisionAutres("TELETRANSPORTEUR")) {
-        // setCibleCameraX(get + fltXDelta, joueur);
-        // setCibleCameraZ(0, joueur);
-        // setPositionCameraX(0, joueur);
-        // setPositionCameraZ(0, joueur);
+        setCibleCameraX(getCibleCameraX(joueur) + fltXDelta, joueur);
+        setCibleCameraZ(getCibleCameraZ(joueur) + fltZDelta, joueur);
+        setPositionCameraX(getPositionCameraX(joueur) + fltXDelta, joueur);
+        setPositionCameraZ(getPositionCameraZ(joueur) + fltZDelta, joueur);
     }
 }
 
