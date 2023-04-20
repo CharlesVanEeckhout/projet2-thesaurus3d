@@ -3,7 +3,7 @@ function creerObj3DTeleTransporteur(objgl, intNoTexture) {
     var obj3DTeleTransporteur = new Object();
     obj3DTeleTransporteur.strType = 'TELETRANSPORTEUR';
     obj3DTeleTransporteur.fltLargeur = 1;
-    obj3DTeleTransporteur.fltHauteur = 1.99;
+    obj3DTeleTransporteur.fltHauteur = 1.49;
     obj3DTeleTransporteur.fltProfondeur = 1;
 
     obj3DTeleTransporteur.vertex = creerVertexTeleTransporteur(objgl, obj3DTeleTransporteur.fltLargeur, obj3DTeleTransporteur.fltHauteur, obj3DTeleTransporteur.fltProfondeur);
@@ -62,7 +62,7 @@ function creerCouleursTeleTransporteur(objgl, tabCouleurs) {
     for (var i = 0; i < 1448; i++) {
         tabCouleurs = tabCouleurs.concat([0.0, 0.0, 0.0, 1.0]);
     }
-    
+
     var objCouleursTeleTransporteur = objgl.createBuffer();
     objgl.bindBuffer(objgl.ARRAY_BUFFER, objCouleursTeleTransporteur);
     objgl.bufferData(objgl.ARRAY_BUFFER, new Float32Array(tabCouleurs), objgl.STATIC_DRAW);

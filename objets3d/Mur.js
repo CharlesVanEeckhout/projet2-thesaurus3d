@@ -3,7 +3,7 @@ function creerObj3DMur(objgl, intNoTexture, binBeton) {
     var obj3DMur = new Object();
     obj3DMur.strType = "MUR";
     obj3DMur.fltLargeur = 1;
-    obj3DMur.fltHauteur = 2;
+    obj3DMur.fltHauteur = 1.5;
     obj3DMur.fltProfondeur = 1;
 
     obj3DMur.vertex = creerVertexMur(objgl, obj3DMur.fltLargeur, obj3DMur.fltHauteur, obj3DMur.fltProfondeur);
@@ -61,7 +61,7 @@ function creerVertexMur(objgl, fltLargeur, fltHauteur, fltProfondeur) {
 
 function creerCouleursMur(objgl, tabCouleur) {
     tabCouleurs = [];
-    for (var i = 0; i < 20; i++)
+    for (var i = 0; i < 10; i++)
         tabCouleurs = tabCouleurs.concat(tabCouleur);
 
     var objCouleursMur = objgl.createBuffer();

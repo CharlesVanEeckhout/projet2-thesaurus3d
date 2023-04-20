@@ -39,8 +39,8 @@ function initNiveau() {
     objScene3D.tabObjets3D.push(obj3DSol);
 
     // Créer le plafond
-    let obj3DPlafond = creerObj3DPlafond(objgl, TEX_SOL);
-    setPositionY(2, obj3DPlafond.transformations);
+    let obj3DPlafond = creerObj3DPlafond(objgl, TEX_PLAFOND);
+    // setPositionY(2, obj3DPlafond.transformations);
     objScene3D.tabObjets3D.push(obj3DPlafond);
 
     // Créer l'indicateur
@@ -208,11 +208,7 @@ function deplacerJoueur(intDeltaMillis) {
         setPositionCameraX(getPositionCameraX(joueur) + fltXDelta, joueur);
         setPositionCameraZ(getPositionCameraZ(joueur) + fltZDelta, joueur);
         collisionJoueurMurs();
-        collisionAutres("TELERECEPTEUR");
-        collisionAutres("COFFRE");
         collisionTransporteur();
-        //Test
-        // console.log(collisionAutres("COFFRE"));
     }
 }
 
@@ -380,9 +376,13 @@ function collisionTransporteur() {
     
     var fltXDelta =  Math.floor(item.transformations[0] - intPosXJoueur);
     var fltZDelta =  Math.floor(item.transformations[2] - intPosZJoueur);
+<<<<<<< Updated upstream
     //console.log(" Position du joueur    : " +  intPosXJoueur + ", " + intPosZJoueur);
     //console.log(" Position du tele    : " +  fltXDelta + ", " + fltZDelta);
     //fltXDelta = nouvelle position du joueur - poisition ancienne du joueur
+=======
+
+>>>>>>> Stashed changes
     if (collisionAutres("TELETRANSPORTEUR")) {
         setCibleCameraX(getCibleCameraX(joueur) + fltXDelta, joueur);
         setCibleCameraZ(getCibleCameraZ(joueur) + fltZDelta, joueur);

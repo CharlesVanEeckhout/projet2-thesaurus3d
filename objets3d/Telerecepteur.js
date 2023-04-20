@@ -3,7 +3,7 @@ function creerObj3DTeleRecepteur(objgl, intNoTexture) {
     var obj3DTeleRecepteur = new Object();
     obj3DTeleRecepteur.strType = "TELERECEPTEUR";
     obj3DTeleRecepteur.fltLargeur = 1;
-    obj3DTeleRecepteur.fltHauteur = 1.99;
+    obj3DTeleRecepteur.fltHauteur = 1.49;
     obj3DTeleRecepteur.fltProfondeur = 1;
 
     obj3DTeleRecepteur.vertex = creerVertexTeleRecepteur(objgl, obj3DTeleRecepteur.fltLargeur, obj3DTeleRecepteur.fltHauteur, obj3DTeleRecepteur.fltProfondeur);
