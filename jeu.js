@@ -78,6 +78,7 @@ function initNiveau() {
                     break;
                 case '=':
                     obj3D = creerObj3DCloture(objgl, TEX_CLOTURE);
+                    setPositionY(1.7, obj3D.transformations);
                     break;
                 default:
                     obj3D = creerObj3DFleche(objgl, TEX_FLECHE);
