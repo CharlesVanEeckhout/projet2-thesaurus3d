@@ -10,6 +10,8 @@ function initObjSons(){
         teleTransport : null,
         gameOver : null,
         gameWin : null,
+
+        clotureFerme : new Audio('sons/clotureFerme.ogg'),
     };
 }
 
