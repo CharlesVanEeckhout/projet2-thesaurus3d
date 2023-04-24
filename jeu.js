@@ -130,6 +130,94 @@ function initNiveau() {
 }
 
 
+function resetNiveau() {
+    intTemps = intTempsAuDebutDunNiveau;
+    intOuvreursDeMurs = Math.floor((10 - intNiveau) / 2);
+    binVueAerienne = false;
+    intTempsVueAerienne = 0;
+    binTricherVueAerienne = false;
+
+    setPositionsCameraXYZ([tStrDedale[0].length / 2, 0.5, tStrDedale.length / 2], objCameraJoueur);
+    setCiblesCameraXYZ([tStrDedale[0].length / 2, 0.8, tStrDedale.length / 2 - 5], objCameraJoueur);
+    setOrientationsXYZ([0, 1, 0], objCameraJoueur);
+
+    // Vider les objets
+    let tObjetsAEnlever = new Array();
+    for (const obj of objScene3D.tabObjets3D) {
+        if (obj.strType &&
+            (obj.strType == "MUR" || obj.strType == "CLOTURE" || obj.strType == "TAPIS" ||
+                obj.strType == "PLAFOND" || obj.strType == "SOL" || obj.strType == "INDICATEUR")) {
+            tObjetsAEnlever.push(obj);
+        }
+    }
+    console.log(tObjetsAEnlever)
+    console.log(objScene3D.tabObjets3D.length)
+    for (var enl of tObjetsAEnlever) {
+        objScene3D.tabObjets3D = objScene3D.tabObjets3D.filter(obj => obj !== enl);
+    }
+    console.log(objScene3D.tabObjets3D.length)
+
+    // Créer le sol
+    let obj3DSol = creerObj3DSol(objgl, TEX_SOL);
+    objScene3D.tabObjets3D.push(obj3DSol);
+
+    // Créer le plafond
+    let obj3DPlafond = creerObj3DPlafond(objgl, TEX_PLAFOND);
+    // setPositionY(2, obj3DPlafond.transformations);
+    objScene3D.tabObjets3D.push(obj3DPlafond);
+
+    // Créer l'indicateur
+    let obj3DIndicateur = creerObj3DIndicateur(objgl, TEX_INDICATEUR);
+    objScene3D.tabObjets3D.push(obj3DIndicateur);
+
+    // Créer le dédale
+    let tabDedale = new Array();
+    for (var i = 0; i < tStrDedale.length; i++) {
+        for (var j = 0; j < tStrDedale[i].length; j++) {
+            let obj3D = null;
+            switch (tStrDedale[i][j]) {
+                case '.':
+                    break;
+                case ',':
+                    obj3D = creerObj3DTapis(objgl, TEX_TAPIS);
+                    break;
+                case '#':
+                    obj3D = creerObj3DMur(objgl, TEX_MUR, false);
+                    break;
+                case 'B':
+                    obj3D = creerObj3DMur(objgl, TEX_MURBETON, true);
+                    break;
+                case '=':
+                    obj3D = creerObj3DCloture(objgl, TEX_CLOTURE);
+                    setPositionY(1.7, obj3D.transformations);
+                    break;
+                default:
+                    obj3D = creerObj3DFleche(objgl, TEX_FLECHE);
+                    setEchelleZ(1 / 0.4, obj3D.transformations);
+            }
+            if (obj3D !== null) {
+                tObjNiveau[i][j] = obj3D;
+                // ajoute tous les objets du niveau à la scène
+                objScene3D.tabObjets3D.push(obj3D);
+            }
+        }
+    }
+
+    for (var i = 0; i < tObjNiveau.length; i++) {
+        for (var j = 0; j < tObjNiveau[i].length; j++) {
+            if (tObjNiveau[i][j] == null) { continue; }
+            setPositionX(j + 0.5, tObjNiveau[i][j].transformations);
+            setPositionZ(i + 0.5, tObjNiveau[i][j].transformations);
+            if (tObjNiveau[i][j].strType == "FLECHE") {
+                setPositionY(1.25, tObjNiveau[i][j].transformations);
+            } else {
+                setPositionY(0, tObjNiveau[i][j].transformations);
+            }
+        }
+    }
+}
+
+
 function miseAJourIndicateur() {
     let objIndicateur = null;
     for (const obj of objScene3D.tabObjets3D) {
@@ -154,7 +242,7 @@ function changeDeVue() {
         binVueAerienne = true;
         objScene3D.camera = objCameraVueAerienne;
     }
-    if ((objClavier['PageDown'] && binVueAerienne == true) || intScore < 10) {
+    if ((objClavier['PageDown'] && binVueAerienne == true) || intScore < 10 || intTemps <= 0) {
         binVueAerienne = false;
         binTricherVueAerienne = false;
         objScene3D.camera = objCameraJoueur;
@@ -215,48 +303,48 @@ function deplacerJoueur(intDeltaMillis) {
     }
 }
 
-function ouvrirMur(){
-        const joueur = objCameraJoueur;
-        let fltJoueurX = getPositionCameraX(joueur);
-        let fltJoueurZ = getPositionCameraZ(joueur);
-        let fltAngleJoueur = Math.atan2(-getCibleCameraZ(objCameraJoueur) + getPositionCameraZ(objCameraJoueur), getCibleCameraX(objCameraJoueur) - getPositionCameraX(objCameraJoueur));
-        //let fltJoueurRayon = 0.2;
-        const tabBriques = [
-            tObjNiveau[Math.floor(fltJoueurZ)][Math.floor(fltJoueurX)-1],
-            tObjNiveau[Math.floor(fltJoueurZ)+1][Math.floor(fltJoueurX)],
-            tObjNiveau[Math.floor(fltJoueurZ)][Math.floor(fltJoueurX)+1],
-            tObjNiveau[Math.floor(fltJoueurZ)-1][Math.floor(fltJoueurX)],
-        ];
+function ouvrirMur() {
+    const joueur = objCameraJoueur;
+    let fltJoueurX = getPositionCameraX(joueur);
+    let fltJoueurZ = getPositionCameraZ(joueur);
+    let fltAngleJoueur = Math.atan2(-getCibleCameraZ(objCameraJoueur) + getPositionCameraZ(objCameraJoueur), getCibleCameraX(objCameraJoueur) - getPositionCameraX(objCameraJoueur));
+    //let fltJoueurRayon = 0.2;
+    const tabBriques = [
+        tObjNiveau[Math.floor(fltJoueurZ)][Math.floor(fltJoueurX) - 1],
+        tObjNiveau[Math.floor(fltJoueurZ) + 1][Math.floor(fltJoueurX)],
+        tObjNiveau[Math.floor(fltJoueurZ)][Math.floor(fltJoueurX) + 1],
+        tObjNiveau[Math.floor(fltJoueurZ) - 1][Math.floor(fltJoueurX)],
+    ];
 
-        const objBlocADetruire = tabBriques[Math.floor((fltAngleJoueur/Math.PI*2+2.5)%4)];
-        //console.log(fltJoueurX, fltJoueurZ);
-        //console.log(getPositionsXYZ(objBlocADetruire.transformations));
-        if(objBlocADetruire === null){
-            //console.log('wohhoo1');
-            return;
-        }
-        if(objBlocADetruire.strType !== 'MUR'){
-            //console.log('wohhoo2');
-            return;
-        }
-        if(objBlocADetruire.binBeton !== false){
-            //console.log('wohhoo3');
-            return;
-        }
-        if(intOuvreursDeMurs <= 0){
-            //console.log('wohhoo3');
-            return;
-        }
-        if(intScore < 50){
-            //console.log('wohhoo3');
-            return;
-        }
-        //console.log('wohhoo');
-        objScene3D.tabObjets3D = objScene3D.tabObjets3D.filter(obj => obj !== objBlocADetruire);
-        tObjNiveau = tObjNiveau.map(i => i.map(obj => (obj === objBlocADetruire) ? null : obj));
-        intOuvreursDeMurs--;
-        intScore -= 50;  
+    const objBlocADetruire = tabBriques[Math.floor((fltAngleJoueur / Math.PI * 2 + 2.5) % 4)];
+    //console.log(fltJoueurX, fltJoueurZ);
+    //console.log(getPositionsXYZ(objBlocADetruire.transformations));
+    if (objBlocADetruire === null) {
+        //console.log('wohhoo1');
+        return;
     }
+    if (objBlocADetruire.strType !== 'MUR') {
+        //console.log('wohhoo2');
+        return;
+    }
+    if (objBlocADetruire.binBeton !== false) {
+        //console.log('wohhoo3');
+        return;
+    }
+    if (intOuvreursDeMurs <= 0) {
+        //console.log('wohhoo3');
+        return;
+    }
+    if (intScore < 50) {
+        //console.log('wohhoo3');
+        return;
+    }
+    //console.log('wohhoo');
+    objScene3D.tabObjets3D = objScene3D.tabObjets3D.filter(obj => obj !== objBlocADetruire);
+    tObjNiveau = tObjNiveau.map(i => i.map(obj => (obj === objBlocADetruire) ? null : obj));
+    intOuvreursDeMurs--;
+    intScore -= 50;
+}
 
 //inspiré par https://www.jeffreythompson.org/collision-detection/line-circle.php
 function collisionCercleLigneX(cX, cZ, cRayon, lX, lZ1, lZ2) {
@@ -348,7 +436,7 @@ function collisionTransporteur() {
         let intPosXJoueur = Math.floor(getPositionCameraX(joueur));
         let intPosZJoueur = Math.floor(getPositionCameraZ(joueur));
         const tabObjTelerecepteur = new Array();
-    
+
         for (let i = 0; i < tObjNiveau.length; i++) {
             for (let j = 0; j < tObjNiveau[i].length; j++) {
                 if (tObjNiveau[i][j] != null && tObjNiveau[i][j].strType == "TELERECEPTEUR") {
@@ -356,12 +444,12 @@ function collisionTransporteur() {
                 }
             }
         }
-        var item = tabObjTelerecepteur[Math.floor(Math.random()*tabObjTelerecepteur.length)];
+        var item = tabObjTelerecepteur[Math.floor(Math.random() * tabObjTelerecepteur.length)];
         let intPosXItem = Math.floor(getPositionX(item.transformations));
         let intPosZItem = Math.floor(getPositionZ(item.transformations));
-        
-        var fltXDelta =  Math.floor(intPosXItem - intPosXJoueur);
-        var fltZDelta =  Math.floor(intPosZItem - intPosZJoueur);
+
+        var fltXDelta = Math.floor(intPosXItem - intPosXJoueur);
+        var fltZDelta = Math.floor(intPosZItem - intPosZJoueur);
         //console.log(" Position du joueur    : " +  intPosXJoueur + ", " + intPosZJoueur);
         //console.log(" Position du tele    : " +  fltXDelta + ", " + fltZDelta);
         //fltXDelta = nouvelle position du joueur - poisition ancienne du joueur
