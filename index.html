@@ -25,6 +25,7 @@
     <script type="text/javascript" src="objets3d/Coffre.js"></script>
     <script type="text/javascript" src="objets3d/Cloture.js"></script>
     <script type="text/javascript" src="objets3d/Indicateur.js"></script>
+    <script type="text/javascript" src="objets3d/GameOver.js"></script>
     <script type="text/javascript" src="jeu.js"></script>
     <script type="text/javascript">
         
@@ -45,6 +46,7 @@
             'objets3d/textures/cloture.png',
             'objets3d/textures/indicateur.png',
             'objets3d/textures/plafond.jpg',
+            'objets3d/textures/gameover.png',
         ];
         const TEX_TRANSPARENT = 0;
         const TEX_SOL = 1;
@@ -58,6 +60,7 @@
         const TEX_CLOTURE = 9;
         const TEX_INDICATEUR = 10;
         const TEX_PLAFOND = 11;
+        const TEX_GAMEOVER = 12;
 
         function demarrer() {
             const objCanvas = document.getElementById('monCanvas');
@@ -167,6 +170,21 @@
                             intScore = 0;
                             strPhaseDuJeu = "perds_ultime";
                             intTempsDsPhaseDeJeu = 0;
+                            binVueAerienne = true;
+                            objScene3D.camera = objCameraVueAerienne;
+                            for (const obj of objScene3D.tabObjets3D) {
+                                switch (obj.strType) {
+                                    case "PLAFOND":
+                                    case "INDICATEUR":
+                                        obj.visible = false;
+                                        break;
+                                    default:
+                                        obj.visible = true;
+                                }
+                            }
+                            let obj3DGameOver = creerObj3DGameOver(objgl, TEX_GAMEOVER);
+                            setPositionsXYZ([tStrDedale[0].length / 2, 35, tStrDedale.length / 2], obj3DGameOver.transformations);
+                            objScene3D.tabObjets3D.push(obj3DGameOver);
                         }else{
                             intScore -= 200;
                             strPhaseDuJeu = "recherche";

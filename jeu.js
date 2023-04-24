@@ -150,12 +150,9 @@ function resetNiveau() {
             tObjetsAEnlever.push(obj);
         }
     }
-    console.log(tObjetsAEnlever)
-    console.log(objScene3D.tabObjets3D.length)
     for (var enl of tObjetsAEnlever) {
         objScene3D.tabObjets3D = objScene3D.tabObjets3D.filter(obj => obj !== enl);
     }
-    console.log(objScene3D.tabObjets3D.length)
 
     // Créer le sol
     let obj3DSol = creerObj3DSol(objgl, TEX_SOL);
