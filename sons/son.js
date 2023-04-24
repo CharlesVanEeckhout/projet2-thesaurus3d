@@ -10,7 +10,7 @@ function initObjSons(){
         teleTransport : null,
         gameOver : null,
         gameWin : null,
-
+        fondJeu : new Audio('sons/fond de jeu.mp3'),
         clotureFerme : new Audio('sons/clotureFerme.ogg'),
     };
 }

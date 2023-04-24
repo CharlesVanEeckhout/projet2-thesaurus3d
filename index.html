@@ -59,7 +59,6 @@
         const TEX_INDICATEUR = 10;
         const TEX_PLAFOND = 11;
 
-
         function demarrer() {
             const objCanvas = document.getElementById('monCanvas');
             objgl = initWebGL(objCanvas);  // Initialise le contexte WebGL
@@ -69,7 +68,6 @@
             intDatePassee = new Date();
             initObjSons();
             initNiveau();
-
             effacerCanevas(objgl);
             dessiner(objgl, objProgShaders, objScene3D);
             animer();
@@ -92,7 +90,6 @@
             let intDeltaMillis = intDateActuelle - intDatePassee;
             intDatePassee = intDateActuelle;
             intTempsDsPhaseDeJeu += intDeltaMillis;
-
             switch(strPhaseDuJeu){
                 case "recherche":
                     intTemps -= intDeltaMillis;

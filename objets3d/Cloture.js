@@ -24,11 +24,14 @@ function creerObj3DCloture(objgl, intNoTexture) {
         else if(getPositionCameraZ(objCameraJoueur) < getPositionZ(obj3DCloture.transformations)-obj3DCloture.fltProfondeur){ //sort de la salle à tapis
             obj3DCloture.collisionMur = true;
             joueSon('clotureFerme');
+            objSons.fondJeu.loop = true;
+            joueSon('fondJeu');
         }
         //anime la chute
         let fltBond1 = 1.7-(obj3DCloture.fermeTemps/250)*(obj3DCloture.fermeTemps/250);
         let fltBond2 = 0.2-((obj3DCloture.fermeTemps-438)/250)*((obj3DCloture.fermeTemps-350)/250);
         setPositionY(Math.max(fltBond1, fltBond2, 0), obj3DCloture.transformations);
+        
     }
     return obj3DCloture;
 }
