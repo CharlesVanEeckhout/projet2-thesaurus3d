@@ -35,18 +35,18 @@ function creerVertexTeleRecepteur(objgl, fltLargeur, fltHauteur, fltProfondeur) 
         tabVertex = tabVertex.concat([Math.cos(i * Math.PI / 180) * fltLargeur / 2, fltHauteur, Math.sin(i * Math.PI / 180) * fltProfondeur / 2]);
     }
 
-    tabVertex = tabVertex.concat([0, 0, 0]) // Le centre du cercle
-    for (var i = 0; i <= 360; i++) {
+    tabVertex = tabVertex.concat([0, 0, 0]) // Le centre du cercle (362)
+    for (var i = 0; i <= 360; i++) { //363-726
         tabVertex = tabVertex.concat([Math.cos(i * Math.PI / 180) * fltLargeur / 2, 0, Math.sin(i * Math.PI / 180) * fltProfondeur / 2]);
     }
 
-    tabVertex = tabVertex.concat([0, fltHauteur, 0]) // Le centre du cercle
-    for (var i = 0; i <= 360; i++) {
+    tabVertex = tabVertex.concat([0, fltHauteur, 0]) // Le centre du cercle (727)
+    for (var i = 0; i <= 360; i++) { //728-1088
         tabVertex = tabVertex.concat([Math.cos(i * Math.PI / 180) * fltLargeur / 3, fltHauteur, Math.sin(i * Math.PI / 180) * fltProfondeur / 3]);
     }
 
-    tabVertex = tabVertex.concat([0, 0, 0]) // Le centre du cercle
-    for (var i = 0; i <= 360; i++) {
+    tabVertex = tabVertex.concat([0, 0, 0]) // Le centre du cercle (1089)
+    for (var i = 0; i <= 360; i++) { //1090-1450
         tabVertex = tabVertex.concat([Math.cos(i * Math.PI / 180) * fltLargeur / 3, 0, Math.sin(i * Math.PI / 180) * fltProfondeur / 3]);
     }
 

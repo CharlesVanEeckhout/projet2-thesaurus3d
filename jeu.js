@@ -141,8 +141,9 @@ function miseAJourIndicateur() {
     if (objIndicateur === null) {
         return; /* triste :( */
     }
+    //même procédé que pour les flèches
     let fltAngleJoueur = Math.atan2(-getCibleCameraZ(objCameraJoueur) + getPositionCameraZ(objCameraJoueur), getCibleCameraX(objCameraJoueur) - getPositionCameraX(objCameraJoueur));
-    //console.log(fltAngleJoueur);
+    console.log(fltAngleJoueur);
     setAngleY(fltAngleJoueur / Math.PI * 180, objIndicateur.transformations);
     setPositionsXYZ(getPositionsCameraXYZ(objCameraJoueur), objIndicateur.transformations);
 }
