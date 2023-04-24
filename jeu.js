@@ -242,7 +242,7 @@ function changeDeVue() {
         binVueAerienne = true;
         objScene3D.camera = objCameraVueAerienne;
     }
-    if ((objClavier['PageDown'] && binVueAerienne == true) || intScore < 10) {
+    if ((objClavier['PageDown'] && binVueAerienne == true) || intScore < 10 || intTemps <= 0) {
         binVueAerienne = false;
         binTricherVueAerienne = false;
         objScene3D.camera = objCameraJoueur;

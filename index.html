@@ -161,6 +161,7 @@
                 case "gagne_ultime":
                     break;
                 case "perds_normal":
+                    changeDeVue();
                     for(const obj of objScene3D.tabObjets3D){
                         setPositionsXYZ(getPositionsXYZ(obj.transformations).map(xyz => xyz + (Math.random() - 0.5)*0.00001*intDeltaMillis*intTempsDsPhaseDeJeu), obj.transformations);
                     }
