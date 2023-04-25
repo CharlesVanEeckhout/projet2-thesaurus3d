@@ -230,11 +230,8 @@ function miseAJourIndicateur() {
     }
     //même procédé que pour les flèches
     let fltAngleJoueur = Math.atan2(-getCibleCameraZ(objCameraJoueur) + getPositionCameraZ(objCameraJoueur), getCibleCameraX(objCameraJoueur) - getPositionCameraX(objCameraJoueur));
-<<<<<<< Updated upstream
     //console.log(fltAngleJoueur);
-=======
     // console.log(fltAngleJoueur);
->>>>>>> Stashed changes
     setAngleY(fltAngleJoueur / Math.PI * 180, objIndicateur.transformations);
     setPositionsXYZ(getPositionsCameraXYZ(objCameraJoueur), objIndicateur.transformations);
 }
@@ -434,15 +431,6 @@ function collisionAutres(strType) {
     return false;
 }
 
-<<<<<<< Updated upstream
-function collisionTransporteur() {
-    if (collisionAutres("TELETRANSPORTEUR")) {
-        const joueur = objCameraJoueur;
-        let intPosXJoueur = Math.floor(getPositionCameraX(joueur));
-        let intPosZJoueur = Math.floor(getPositionCameraZ(joueur));
-        const tabObjTelerecepteur = new Array();
-
-=======
 function collisionTeletransporteur() {
     const joueur = objCameraJoueur;
     const tabObjTelerecepteur = new Array();
@@ -451,7 +439,6 @@ function collisionTeletransporteur() {
     
     if (collisionAutres("TELETRANSPORTEUR")) {
         
->>>>>>> Stashed changes
         for (let i = 0; i < tObjNiveau.length; i++) {
             for (let j = 0; j < tObjNiveau[i].length; j++) {
                 if (tObjNiveau[i][j] != null && tObjNiveau[i][j].strType == "TELERECEPTEUR") {
@@ -459,14 +446,10 @@ function collisionTeletransporteur() {
                 }
             }
         }
-<<<<<<< Updated upstream
-        var item = tabObjTelerecepteur[Math.floor(Math.random() * tabObjTelerecepteur.length)];
-=======
 
         //if (tableau.length > 2)
         var item = tabObjTelerecepteur[Math.floor(Math.random()*tabObjTelerecepteur.length)];
         objRDestination = item;
->>>>>>> Stashed changes
         let intPosXItem = Math.floor(getPositionX(item.transformations));
         let intPosZItem = Math.floor(getPositionZ(item.transformations));
 
