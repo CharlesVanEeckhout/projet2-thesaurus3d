@@ -1,10 +1,10 @@
-const intTempsAuDebutDunNiveau = 6000;
+const intTempsAuDebutDunNiveau = 60000;
 var intDatePassee = 0;
 var objClavier = null;
 
 var objCameraJoueur = null;
 var objCameraVueAerienne = null;
-var intNiveau = 10; //devrait être 1 quand on remet le projet
+var intNiveau = 1; //devrait être 1 quand on remet le projet
 var intScore = 300;
 var intTemps = 0; //en millisecondes
 var intOuvreursDeMurs = 0;
