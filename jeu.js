@@ -4,7 +4,7 @@ var objClavier = null;
 
 var objCameraJoueur = null;
 var objCameraVueAerienne = null;
-var intNiveau = 1; //devrait être 1 quand on remet le projet
+var intNiveau = 8; //devrait être 1 quand on remet le projet
 var intScore = 300;
 var intTemps = 0; //en millisecondes
 var intOuvreursDeMurs = 0;
@@ -15,6 +15,8 @@ var tObjNiveau = null;
 var objPositionTresor = null;
 var strPhaseDuJeu = "recherche";
 var intTempsDsPhaseDeJeu = 0;
+var objRDestination = null;
+var test = 0;
 
 
 function initNiveau() {
@@ -228,7 +230,11 @@ function miseAJourIndicateur() {
     }
     //même procédé que pour les flèches
     let fltAngleJoueur = Math.atan2(-getCibleCameraZ(objCameraJoueur) + getPositionCameraZ(objCameraJoueur), getCibleCameraX(objCameraJoueur) - getPositionCameraX(objCameraJoueur));
+<<<<<<< Updated upstream
     //console.log(fltAngleJoueur);
+=======
+    // console.log(fltAngleJoueur);
+>>>>>>> Stashed changes
     setAngleY(fltAngleJoueur / Math.PI * 180, objIndicateur.transformations);
     setPositionsXYZ(getPositionsCameraXYZ(objCameraJoueur), objIndicateur.transformations);
 }
@@ -296,7 +302,8 @@ function deplacerJoueur(intDeltaMillis) {
         setPositionCameraX(getPositionCameraX(joueur) + fltXDelta, joueur);
         setPositionCameraZ(getPositionCameraZ(joueur) + fltZDelta, joueur);
         collisionJoueurMurs();
-        collisionTransporteur();
+        collisionTeletransporteur();
+        collisionTelerecepteur();
     }
 }
 
@@ -427,6 +434,7 @@ function collisionAutres(strType) {
     return false;
 }
 
+<<<<<<< Updated upstream
 function collisionTransporteur() {
     if (collisionAutres("TELETRANSPORTEUR")) {
         const joueur = objCameraJoueur;
@@ -434,6 +442,16 @@ function collisionTransporteur() {
         let intPosZJoueur = Math.floor(getPositionCameraZ(joueur));
         const tabObjTelerecepteur = new Array();
 
+=======
+function collisionTeletransporteur() {
+    const joueur = objCameraJoueur;
+    const tabObjTelerecepteur = new Array();
+    let intPosXJoueur = Math.floor(getPositionCameraX(joueur));
+    let intPosZJoueur = Math.floor(getPositionCameraZ(joueur));
+    
+    if (collisionAutres("TELETRANSPORTEUR")) {
+        
+>>>>>>> Stashed changes
         for (let i = 0; i < tObjNiveau.length; i++) {
             for (let j = 0; j < tObjNiveau[i].length; j++) {
                 if (tObjNiveau[i][j] != null && tObjNiveau[i][j].strType == "TELERECEPTEUR") {
@@ -441,7 +459,14 @@ function collisionTransporteur() {
                 }
             }
         }
+<<<<<<< Updated upstream
         var item = tabObjTelerecepteur[Math.floor(Math.random() * tabObjTelerecepteur.length)];
+=======
+
+        //if (tableau.length > 2)
+        var item = tabObjTelerecepteur[Math.floor(Math.random()*tabObjTelerecepteur.length)];
+        objRDestination = item;
+>>>>>>> Stashed changes
         let intPosXItem = Math.floor(getPositionX(item.transformations));
         let intPosZItem = Math.floor(getPositionZ(item.transformations));
 
@@ -450,11 +475,56 @@ function collisionTransporteur() {
         //console.log(" Position du joueur    : " +  intPosXJoueur + ", " + intPosZJoueur);
         //console.log(" Position du tele    : " +  fltXDelta + ", " + fltZDelta);
         //fltXDelta = nouvelle position du joueur - poisition ancienne du joueur
+        
+        setCibleCameraX(getCibleCameraX(joueur) + fltXDelta, joueur);
+        setCibleCameraZ(getCibleCameraZ(joueur) + fltZDelta, joueur);
+        setPositionCameraX(getPositionCameraX(joueur) + fltXDelta, joueur);
+        setPositionCameraZ(getPositionCameraZ(joueur) + fltZDelta, joueur);
+        
+      
+        
+    }
+}
+
+
+function collisionTelerecepteur() {
+    const joueur = objCameraJoueur;
+    const tabObjTelerecepteur = new Array();
+    let intPosXJoueur = Math.floor(getPositionCameraX(joueur));
+    let intPosZJoueur = Math.floor(getPositionCameraZ(joueur));
+
+    if (objRDestination != null && (intPosXJoueur != Math.floor(getPositionX(objRDestination.transformations)) || intPosZJoueur != Math.floor(getPositionZ(objRDestination.transformations)))) {
+        console.log("X : " + Math.floor(getPositionX(objRDestination.transformations)) + "Z : " + Math.floor(getPositionZ(objRDestination.transformations)))
+        console.log("X : " + intPosXJoueur + "\nZ : " + intPosZJoueur)
+        objRDestination = null;
+    }
+
+    if (collisionAutres("TELERECEPTEUR") && objRDestination == null) {
+
+        // let objRDepart = tObjNiveau[intPosZJoueur][intPosXJoueur];
+
+        for (let i = 0; i < tObjNiveau.length; i++) {
+            for (let j = 0; j < tObjNiveau[i].length; j++) {
+                if (tObjNiveau[i][j] != null && tObjNiveau[i][j].strType == "TELERECEPTEUR" && tObjNiveau[i][j] != objRDestination) {
+                    tabObjTelerecepteur.push(tObjNiveau[i][j]);
+                }
+            }
+        }
+        var item = tabObjTelerecepteur[Math.floor(Math.random() * tabObjTelerecepteur.length)];
+        let intPosXItem = Math.floor(getPositionX(item.transformations));
+        let intPosZItem = Math.floor(getPositionZ(item.transformations));
+
+        objRDestination = item;
+        // console.log("X : " + intPosXJoueur + "\nZ : " + intPosZJoueur)
+
+        var fltXDelta = Math.floor(intPosXItem - intPosXJoueur);
+        var fltZDelta = Math.floor(intPosZItem - intPosZJoueur);
 
         setCibleCameraX(getCibleCameraX(joueur) + fltXDelta, joueur);
         setCibleCameraZ(getCibleCameraZ(joueur) + fltZDelta, joueur);
         setPositionCameraX(getPositionCameraX(joueur) + fltXDelta, joueur);
         setPositionCameraZ(getPositionCameraZ(joueur) + fltZDelta, joueur);
+
     }
 }
 
