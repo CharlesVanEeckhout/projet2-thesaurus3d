@@ -2,9 +2,9 @@
 function creerObj3DCoffre(objgl, intNoTexture) {
     var obj3DCoffre = new Object();
     obj3DCoffre.strType = 'COFFRE';
-    obj3DCoffre.fltLargeur = 0.6;    // X
-    obj3DCoffre.fltHauteur = 0.6;    // Y
-    obj3DCoffre.fltProfondeur = 0.6; // Z
+    obj3DCoffre.fltLargeur = 0.5;    // X
+    obj3DCoffre.fltHauteur = 0.35;    // Y
+    obj3DCoffre.fltProfondeur = 0.3; // Z
 
     obj3DCoffre.vertex = creerVertexCoffre(objgl,obj3DCoffre.fltLargeur ,obj3DCoffre.fltHauteur, obj3DCoffre.fltProfondeur);
     obj3DCoffre.couleurs = creerCouleursCoffre(objgl, [1, 1, 1, 1]);
@@ -20,47 +20,47 @@ function creerObj3DCoffre(objgl, intNoTexture) {
 function creerVertexCoffre(objgl, fltLargeur, fltHauteur,fltProfondeur) {
     var tabVertex = [
         //Face d'au dessus 0-3
-        -fltLargeur / 2,  0.0,            -fltProfondeur / 4,
-         fltLargeur / 2,  0.0,            -fltProfondeur / 4,
-        -fltLargeur / 2,  0.0,             fltProfondeur / 4,
-         fltLargeur / 2,  0.0,             fltProfondeur / 4,
+        -fltLargeur / 2,  0.0,            -fltProfondeur / 2,
+         fltLargeur / 2,  0.0,            -fltProfondeur / 2,
+        -fltLargeur / 2,  0.0,             fltProfondeur / 2,
+         fltLargeur / 2,  0.0,             fltProfondeur / 2,
 
         //Face de arrière 4-7
-        -fltLargeur / 2,  0.0,            -fltProfondeur / 4, 
-         fltLargeur / 2,  0.0,            -fltProfondeur / 4, 
-        -fltLargeur / 2,  fltHauteur / 2, -fltProfondeur / 4,  
-         fltLargeur / 2,  fltHauteur / 2, -fltProfondeur / 4,
+        -fltLargeur / 2,  0.0,            -fltProfondeur / 2, 
+         fltLargeur / 2,  0.0,            -fltProfondeur / 2, 
+        -fltLargeur / 2,  fltHauteur * 2/3, -fltProfondeur / 2,  
+         fltLargeur / 2,  fltHauteur * 2/3, -fltProfondeur / 2,
 
         //Face de avant 8-11
-        -fltLargeur / 2,  0.0,            fltProfondeur / 4, 
-         fltLargeur / 2,  0.0,            fltProfondeur / 4, 
-        -fltLargeur / 2,  fltHauteur / 2, fltProfondeur / 4,  
-         fltLargeur / 2,  fltHauteur / 2, fltProfondeur / 4,
+        -fltLargeur / 2,  0.0,            fltProfondeur / 2, 
+         fltLargeur / 2,  0.0,            fltProfondeur / 2, 
+        -fltLargeur / 2,  fltHauteur * 2/3, fltProfondeur / 2,  
+         fltLargeur / 2,  fltHauteur * 2/3, fltProfondeur / 2,
 
         //Face de gauche 12-15
-        -fltLargeur / 2,  0.0,            -fltProfondeur / 4, 
-        -fltLargeur / 2,  0.0,             fltProfondeur / 4, 
-        -fltLargeur / 2,  fltHauteur / 2, -fltProfondeur / 4,  
-        -fltLargeur / 2,  fltHauteur / 2,  fltProfondeur / 4,
+        -fltLargeur / 2,  0.0,            -fltProfondeur / 2, 
+        -fltLargeur / 2,  0.0,             fltProfondeur / 2, 
+        -fltLargeur / 2,  fltHauteur * 2/3, -fltProfondeur / 2,  
+        -fltLargeur / 2,  fltHauteur * 2/3,  fltProfondeur / 2,
 
         //Face de droite 16-19
-         fltLargeur / 2,  0.0,            -fltProfondeur / 4, 
-         fltLargeur / 2,  0.0,             fltProfondeur / 4, 
-         fltLargeur / 2,  fltHauteur / 2, -fltProfondeur / 4,  
-         fltLargeur / 2,  fltHauteur / 2,  fltProfondeur / 4,
+         fltLargeur / 2,  0.0,            -fltProfondeur / 2, 
+         fltLargeur / 2,  0.0,             fltProfondeur / 2, 
+         fltLargeur / 2,  fltHauteur * 2/3, -fltProfondeur / 2,  
+         fltLargeur / 2,  fltHauteur * 2/3,  fltProfondeur / 2,
 
-        -fltLargeur / 2,  fltHauteur / 2,  0.0, //20
+        -fltLargeur / 2,  fltHauteur * 2/3,  0.0, //20
 
     ];
 
     for(var i = 0; i <= 180; i++){ //21-201
-        tabVertex.push(-fltLargeur / 2, fltHauteur / 4 *(2+Math.sin(i*Math.PI/180)), fltProfondeur / 4*(Math.cos(i*Math.PI/180)))
+        tabVertex.push(-fltLargeur / 2, fltHauteur / 3 *(2+Math.sin(i*Math.PI/180)), fltProfondeur / 2*(Math.cos(i*Math.PI/180)))
     }
 
     tabVertex.push(fltLargeur / 2, fltHauteur / 2, 0.0); //202
 
     for(var i = 0; i <= 180; i++){ //203-383
-        tabVertex.push(fltLargeur / 2, fltHauteur / 4 *(2+Math.sin(i*Math.PI/180)), fltProfondeur / 4*(Math.cos(i*Math.PI/180)))
+        tabVertex.push(fltLargeur / 2, fltHauteur / 3 *(2+Math.sin(i*Math.PI/180)), fltProfondeur / 2*(Math.cos(i*Math.PI/180)))
     }
     
 

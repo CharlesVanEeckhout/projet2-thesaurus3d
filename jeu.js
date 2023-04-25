@@ -1,10 +1,10 @@
-const intTempsAuDebutDunNiveau = 60000;
+const intTempsAuDebutDunNiveau = 6000;
 var intDatePassee = 0;
 var objClavier = null;
 
 var objCameraJoueur = null;
 var objCameraVueAerienne = null;
-var intNiveau = 8; //devrait être 1 quand on remet le projet
+var intNiveau = 10; //devrait être 1 quand on remet le projet
 var intScore = 300;
 var intTemps = 0; //en millisecondes
 var intOuvreursDeMurs = 0;
@@ -320,27 +320,13 @@ function ouvrirMur() {
     const objBlocADetruire = tabBriques[Math.floor((fltAngleJoueur / Math.PI * 2 + 2.5) % 4)];
     //console.log(fltJoueurX, fltJoueurZ);
     //console.log(getPositionsXYZ(objBlocADetruire.transformations));
-    if (objBlocADetruire === null) {
-        //console.log('wohhoo1');
-        return;
-    }
-    if (objBlocADetruire.strType !== 'MUR') {
-        //console.log('wohhoo2');
-        return;
-    }
-    if (objBlocADetruire.binBeton !== false) {
-        //console.log('wohhoo3');
-        return;
-    }
-    if (intOuvreursDeMurs <= 0) {
-        //console.log('wohhoo3');
-        return;
-    }
-    if (intScore < 50) {
-        //console.log('wohhoo3');
-        return;
-    }
+    if (objBlocADetruire === null) {return;}
+    if (objBlocADetruire.strType !== 'MUR') {return;}
+    if (objBlocADetruire.binBeton !== false) {return;}
+    if (intOuvreursDeMurs <= 0) {return;}
+    if (intScore < 50) {return;}
     //console.log('wohhoo');
+    joueSon('ouvreMur');
     objScene3D.tabObjets3D = objScene3D.tabObjets3D.filter(obj => obj !== objBlocADetruire);
     tObjNiveau = tObjNiveau.map(i => i.map(obj => (obj === objBlocADetruire) ? null : obj));
     intOuvreursDeMurs--;
@@ -421,6 +407,7 @@ function collisionJoueurMurs() {
     }
 }
 
+
 function collisionAutres(strType) {
     let intPosXJoueur = Math.floor(getPositionCameraX(objCameraJoueur));
     let intPosZJoueur = Math.floor(getPositionCameraZ(objCameraJoueur));
@@ -431,6 +418,7 @@ function collisionAutres(strType) {
     return false;
 }
 
+
 function collisionTeletransporteur() {
     const joueur = objCameraJoueur;
     const tabObjTelerecepteur = new Array();
@@ -438,7 +426,6 @@ function collisionTeletransporteur() {
     let intPosZJoueur = Math.floor(getPositionCameraZ(joueur));
     
     if (collisionAutres("TELETRANSPORTEUR")) {
-        
         for (let i = 0; i < tObjNiveau.length; i++) {
             for (let j = 0; j < tObjNiveau[i].length; j++) {
                 if (tObjNiveau[i][j] != null && tObjNiveau[i][j].strType == "TELERECEPTEUR") {
@@ -447,7 +434,6 @@ function collisionTeletransporteur() {
             }
         }
 
-        //if (tableau.length > 2)
         var item = tabObjTelerecepteur[Math.floor(Math.random()*tabObjTelerecepteur.length)];
         objRDestination = item;
         let intPosXItem = Math.floor(getPositionX(item.transformations));
@@ -459,13 +445,11 @@ function collisionTeletransporteur() {
         //console.log(" Position du tele    : " +  fltXDelta + ", " + fltZDelta);
         //fltXDelta = nouvelle position du joueur - poisition ancienne du joueur
         
+        joueSon('teleTransport');
         setCibleCameraX(getCibleCameraX(joueur) + fltXDelta, joueur);
         setCibleCameraZ(getCibleCameraZ(joueur) + fltZDelta, joueur);
         setPositionCameraX(getPositionCameraX(joueur) + fltXDelta, joueur);
         setPositionCameraZ(getPositionCameraZ(joueur) + fltZDelta, joueur);
-        
-      
-        
     }
 }
 
@@ -483,9 +467,6 @@ function collisionTelerecepteur() {
     }
 
     if (collisionAutres("TELERECEPTEUR") && objRDestination == null) {
-
-        // let objRDepart = tObjNiveau[intPosZJoueur][intPosXJoueur];
-
         for (let i = 0; i < tObjNiveau.length; i++) {
             for (let j = 0; j < tObjNiveau[i].length; j++) {
                 if (tObjNiveau[i][j] != null && tObjNiveau[i][j].strType == "TELERECEPTEUR" && tObjNiveau[i][j] != objRDestination) {
@@ -503,11 +484,11 @@ function collisionTelerecepteur() {
         var fltXDelta = Math.floor(intPosXItem - intPosXJoueur);
         var fltZDelta = Math.floor(intPosZItem - intPosZJoueur);
 
+        joueSon('teleTransport');
         setCibleCameraX(getCibleCameraX(joueur) + fltXDelta, joueur);
         setCibleCameraZ(getCibleCameraZ(joueur) + fltZDelta, joueur);
         setPositionCameraX(getPositionCameraX(joueur) + fltXDelta, joueur);
         setPositionCameraZ(getPositionCameraZ(joueur) + fltZDelta, joueur);
-
     }
 }
 

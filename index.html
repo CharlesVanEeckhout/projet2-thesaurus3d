@@ -117,11 +117,14 @@
                     if(intTemps === 0){
                         strPhaseDuJeu = "perds_normal";
                         intTempsDsPhaseDeJeu = 0;
+                        break;
                     }
 
-                    if(collisionAutres("COFFRE")){
+                    if(collisionAutres("COFFRE") || true){
+                        joueSon('trouveTresor');
                         strPhaseDuJeu = "gagne_pre-decompte";
                         intTempsDsPhaseDeJeu = 0;
+                        break;
                     }
                     break;
                 case "gagne_pre-decompte":
@@ -150,6 +153,23 @@
                             //gagne le jeu au complet
                             strPhaseDuJeu = "gagne_ultime";
                             intTempsDsPhaseDeJeu = 0;
+                            initNiveau();
+                            intTemps = 0;
+                            setPositionsCameraXYZ([tStrDedale[0].length / 2 - 1.7, 1.9, tStrDedale.length / 2 - 1.4], objCameraJoueur);
+                            setCiblesCameraXYZ([tStrDedale[0].length / 2, 0.3, tStrDedale.length / 2 + 2], objCameraJoueur);
+                            for(var i = 0; i < 4; i++){
+                                for(var j = 0; j < 4-i; j++){
+                                    console.log(i, j)
+                                    let obj3DTresor = creerObj3DCoffre(objgl, TEX_COFFRE); //objet 3d tresor
+                                    setPositionsXYZ([
+                                        tStrDedale[0].length / 2 - 1.5 + obj3DTresor.fltLargeur/2 + obj3DTresor.fltLargeur * j, 
+                                        obj3DTresor.fltHauteur * i, 
+                                        tStrDedale.length / 2 + 1.5 - obj3DTresor.fltProfondeur/2], 
+                                        obj3DTresor.transformations);
+                                    objScene3D.tabObjets3D.push(obj3DTresor);
+                                }
+                            }
+                            
                         }
                         else{
                             strPhaseDuJeu = "recherche";
