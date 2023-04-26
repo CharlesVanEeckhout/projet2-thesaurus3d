@@ -115,6 +115,7 @@
                     }
 
                     if(intTemps === 0){
+                        joueSon('tempsEcoulee');
                         strPhaseDuJeu = "perds_normal";
                         intTempsDsPhaseDeJeu = 0;
                         break;
@@ -151,12 +152,14 @@
                         intNiveau++;
                         if(intNiveau > 10){
                             //gagne le jeu au complet
+                            pauseSon('fondJeu');
+                            joueSon('gameWin');
                             strPhaseDuJeu = "gagne_ultime";
                             intTempsDsPhaseDeJeu = 0;
                             initNiveau();
                             intTemps = 0;
-                            setPositionsCameraXYZ([tStrDedale[0].length / 2 - 1.7, 1.9, tStrDedale.length / 2 - 1.4], objCameraJoueur);
-                            setCiblesCameraXYZ([tStrDedale[0].length / 2, 0.3, tStrDedale.length / 2 + 2], objCameraJoueur);
+                            setPositionsCameraXYZ([tStrDedale[0].length / 2 + 0.9, 1.9, tStrDedale.length / 2 - 2], objCameraJoueur);
+                            setCiblesCameraXYZ([tStrDedale[0].length / 2 - 1.2, 0.3, tStrDedale.length / 2 + 2], objCameraJoueur);
                             for(var i = 0; i < 4; i++){
                                 for(var j = 0; j < 4-i; j++){
                                     console.log(i, j)
@@ -172,6 +175,7 @@
                             
                         }
                         else{
+                            joueSon('nouveauNiveau');
                             strPhaseDuJeu = "recherche";
                             intTempsDsPhaseDeJeu = 0;
                             initNiveau();
@@ -206,6 +210,7 @@
                             setPositionsXYZ([tStrDedale[0].length / 2, 35, tStrDedale.length / 2], obj3DGameOver.transformations);
                             objScene3D.tabObjets3D.push(obj3DGameOver);
                         }else{
+                            joueSon('recommenceNiveau');
                             intScore -= 200;
                             strPhaseDuJeu = "recherche";
                             intTempsDsPhaseDeJeu = 0;
@@ -379,7 +384,13 @@
 </head>
 
 <body onload="demarrer()">
-    <canvas id="monCanvas" width="640" height="640" tabIndex="1" onkeydown="onKeyDown(); return false" onkeyup="onKeyUp()">
+    <div style="background-color:gray; color: black; font-family:monospace; width:640px" class="my-1">
+        <div class="row">
+            <div class="col-4 fs-1">Thésaurus</div>
+            <div class="col-8 fs-6">par Charles Van Eeckhout, Théolinda Ghilyane Henri et Cheick Malick Traore</div>
+        </div>
+    </div>
+    <canvas id="monCanvas" class="my-0" width="640" height="640" tabIndex="1" onkeydown="onKeyDown(); return false" onkeyup="onKeyUp()">
         Votre navigateur ne supporte pas la balise canvas
     </canvas>
     <div style="background-color:gray; color: black; font-family:monospace; width:640px">

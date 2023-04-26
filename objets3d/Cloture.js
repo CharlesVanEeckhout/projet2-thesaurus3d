@@ -21,7 +21,7 @@ function creerObj3DCloture(objgl, intNoTexture) {
         if(obj3DCloture.collisionMur){
             obj3DCloture.fermeTemps += intDeltaMillis;
         }
-        else if(getPositionCameraZ(objCameraJoueur) < getPositionZ(obj3DCloture.transformations)-obj3DCloture.fltProfondeur){ //sort de la salle à tapis
+        else if(getPositionCameraZ(objCameraJoueur) < getPositionZ(obj3DCloture.transformations)-obj3DCloture.fltProfondeur/2-0.1){ //sort de la salle à tapis
             obj3DCloture.collisionMur = true;
             joueSon('clotureFerme');
             objSons.fondJeu.loop = true;
