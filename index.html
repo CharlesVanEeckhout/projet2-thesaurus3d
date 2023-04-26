@@ -115,6 +115,11 @@
                     }
 
                     if(intTemps === 0){
+                        if(intScore < 200){
+                            pauseSon('fondJeu');
+                            objSons.gameOver.loop = true;
+                            joueSon('gameOver');
+                        }
                         joueSon('tempsEcoulee');
                         strPhaseDuJeu = "perds_normal";
                         intTempsDsPhaseDeJeu = 0;
@@ -130,6 +135,7 @@
                     break;
                 case "gagne_pre-decompte":
                     if(intTempsDsPhaseDeJeu >= 1000){
+                        joueSon('decompte');
                         strPhaseDuJeu = "gagne_decompte";
                         intTempsDsPhaseDeJeu = 0;
                     }
@@ -137,6 +143,7 @@
                 case "gagne_decompte":
                     if(intTempsDsPhaseDeJeu >= 100){
                         if(intTemps > 0){
+                            joueSon('decompte');
                             intTemps -= 1000;
                             intTemps = Math.ceil(intTemps/1000)*1000;
                             intScore += 10;

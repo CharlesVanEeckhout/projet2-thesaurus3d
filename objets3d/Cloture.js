@@ -25,7 +25,9 @@ function creerObj3DCloture(objgl, intNoTexture) {
             obj3DCloture.collisionMur = true;
             joueSon('clotureFerme');
             objSons.fondJeu.loop = true;
-            joueSon('fondJeu');
+            if(objSons.fondJeu.paused){
+                joueSon('fondJeu');
+            }
         }
         //anime la chute
         let fltBond1 = 1.7-(obj3DCloture.fermeTemps/250)*(obj3DCloture.fermeTemps/250);
